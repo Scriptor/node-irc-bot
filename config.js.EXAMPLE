@@ -1,0 +1,7 @@
+module.exports = {
+	channels: ["##webdevvit"],
+	server: "irc.freenode.net",
+	botName: "WAMbot",
+	botPass: "hunter2",
+	alias_token: "$"
+}
