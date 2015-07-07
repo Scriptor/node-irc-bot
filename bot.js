@@ -15,7 +15,7 @@ Bot.prototype = {
   * Feeds a message through the bot's engine
   * and streams the response back
   */
-  consumeMessage: function(from, to, message) {
+  consumeCommand: function(from, to, message) {
     // If you're ignored you can't do anything
     if(!IgnoredUsers.includes(from)) {
 
@@ -34,7 +34,7 @@ Bot.prototype = {
                 cmd.func.apply(this, [to, parts.params]);
               break;
               case 'string':
-                this.stream.say(to, cmd.func);
+                this.processAlias(to, from, cmd.func, parts.params);
               break;
             }
           } else {
@@ -47,6 +47,44 @@ Bot.prototype = {
         }
       }
     }
+  },
+
+ /* processAlias
+  *
+  * Processes a alias's template then spits out the processed
+  * template over the stream.
+  */
+  processAlias: function(channel, from, string, param_string) {
+    // Process the template
+    var rx = /{([^}]+)}/g;
+
+    var objects = string.match(rx);
+
+    if(objects !== null) {
+      for(var i=0; i<objects.length; i++) {
+        var template_element = objects[i];
+
+        var var_name = template_element.slice(1, template_element.length-1);
+
+        if(isNaN(var_name)) {
+          switch(var_name) {
+            case 'prev':
+              string = string.replace(template_element, "PREVIOUSNICK");
+            break;
+            case 'user':
+              string = string.replace(template_element, from);
+            break;
+          }
+        } else {
+          parts = param_string.split(',');
+
+          string = string.replace(template_element, parts[parseInt(var_name)].trim());
+        }
+      }
+    }
+
+    // Output processed template
+    this.stream.say(channel, string);
   },
 
  /* authenticate

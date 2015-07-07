@@ -23,4 +23,4 @@ bot.load_command_block('normal', AliasCommands);
 
 console.log(' -- Adding Listeners --');
 client.addListener('registered', bot.authenticate.bind(bot));
-client.addListener('message', bot.consumeMessage.bind(bot));
+client.addListener('message', bot.consumeCommand.bind(bot));
