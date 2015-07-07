@@ -1,123 +1,97 @@
-console.log('Bot starting');
+var IgnoredUsers = require('./ignored_users.js');
+var SuperUsers = require('./super_users.js');
 
-var irc = require('irc');
-// var c = require('irc-colors');
-// var mongo = require('mongodb');
-// var monk = require('monk');
-// var db = monk('localhost:27017/nodetest1');
-var responses = require('./responses.js');
-var nickserv = require('./nickserv.js');
-var chanserv = require('./chanserv.js');
-var ignored_users = require('./ignored_users.js');
-var super_users = require('./super_users.js');
-var bot_commands = require('./bot_commands.js');
-var config = require('./config.js');
+var Bot = function(name, password, token, stream) {
+  this.name     = name;
+  this.token    = token;
+  this.stream   = stream;
+  this.password = password;
+  this.commands = {};
+};
 
-console.log('Connecting to ' + config.server);
+Bot.prototype = {
+ /* consumeMessage
+  *
+  * Feeds a message through the bot's engine
+  * and streams the response back
+  */
+  consumeMessage: function(from, to, message) {
+    // If you're ignored you can't do anything
+    if(!IgnoredUsers.includes(from)) {
 
-try {
-  var bot = new irc.Client(config.server, config.botName, {
-    channels: config.channels
-  });
-} catch (e) {
-  console.log('Exception found');
-  console.log(e);
-}
+      // Do we have our command token?
+      if(message.indexOf(this.token) === 0) {
+        var parts =  this._parse_command(message);
 
-console.log('Adding listeners');
+        // Check if the command is in our commands object
+        if(typeof this.commands[parts.name] === 'object') {
+          var cmd = this.commands[parts.name];
 
-bot.addListener('message', function(from, to, text, message) {
-  var parts = message.args[1].split(' '),
-    new_message = [],
-    colors = ['red', 'orange', 'yellow', 'green', 'blue', 'purple'],
-    key = parts[0].replace(config.alias_token, ''),
-    scope_helper = {
-      bot: bot, 
-      config: config,
-      chanserv: chanserv,
-      nickserv: nickserv,
-      process: process,
-      message: message,
-      from: from,
-      to: to,
-      text: text,
-      key: key
+          // Check if the user has permission to run the command
+          if(this['user_can_' + cmd.group](from)) {
+            cmd.func.apply(this, [to, parts.params]);
+          } else {
+            this.stream.say(to, 'You\'re too useless to do that!');
+          }
+
+        // The command doesn't exist
+        } else {
+          this.stream.say(to, 'Command not found!');
+        }
+      }
+    }
+  },
+
+ /* authenticate
+  *
+  * Attempts to authenticate our bot's user account
+  * with the stream.
+  */
+  authenticate: function() {
+    // Auth bot
+    console.log('Attempting Authentication');
+    this.stream.say('NICKSERV', 'identify' + this.password);
+  },
+
+ /* user_can_{group_name}
+  *
+  * Helper functions to check if a user can run under a given command group
+  */
+  user_can_normal: function(name) {
+    return true;
+  },
+
+  user_can_super: function(name) {
+    return SuperUsers.includes(name);
+  },
+
+ /* load_command_block
+  *
+  * Loads the command block into the correct grouping. This allows
+  * us to dynamically load blocks of commands from command modules.
+  */
+  load_command_block: function(group, commands) {
+    for(var name in commands) {
+      this.commands[name] = {
+        group: group,
+        func:  commands[name]
+      };
+    }
+  },
+
+ /* _parse_command
+  *
+  * Returns an object that represents the two main parts of a command,
+  * the name of the command and the param string.
+  */
+  _parse_command: function(string) {
+    string = string.slice(this.token.length, string.length);
+
+    return {
+      name: string.substr(0, string.indexOf(' ')),
+      params: string.substr(string.indexOf(' '), string.length)
     };
-
-  console.log('--');
-  console.log('Message received:');
-  console.log(from, to, text, message);
-  console.log('--');
-
-  // Auto auth if needed
-  if( nickserv.has_authed === false ){
-    console.log('Attempting auto auth..');
-    bot_commands.auth(scope_helper);
   }
+};
 
-
-  // Deal with IRC services if needed
-  if( from == 'nickserv' ) {
-    console.log('Found a message from nickserv, processing');
-    return nickserv.handle({'from': from, 'to': to, 'text': text, 'message': message});
-  } else if( from == 'chanserv' ) {
-    console.log('Found a message from chanserv, processing');
-    return chanserv.handle({'from': from, 'to': to, 'text': text, 'message': message});
-  }
-
-  if( ignored_users.is(from) === false ) {
-    console.log('This user is not ignored..');
-    // @TODO timebot echo here -- write module
-
-
-    // Figure out the token situation
-    if( config.alias_token.length > 1 ) {
-      console.log('token length > 1; ' + config.alias_token);
-      token_string = '';
-      for( i = 0; i < config.alias_token.length; i++ ) {
-        token_string = token_string + parts[0].charAt(i);
-      }
-
-      console.log(token_string);
-      possible_token = token_string;
-    } else {
-      var possible_token = parts[0].charAt(0);
-    }
-    console.log('Possible token determined to be ' + possible_token);
-
-    // Handle commands, aliases, etc
-    console.log('Checking if possible_token is legit: ' + possible_token + '; real is ' + config.alias_token );
-    if( possible_token == config.alias_token ) {
-      console.log('Command found');
-
-      // Bot commands for bot admins
-      try {
-        if( (bot_commands[key] !== undefined) && ( typeof bot_commands[key] == 'function' ) )
-        {
-          console.log('Looks like ' + key + ' is a bot command');
-          return bot_commands[key](scope_helper);
-        }
-      } catch( TypeError ) {
-        console.log(TypeError);
-        console.log('This is not a bot_command');
-      }
-
-      // Alias responses
-      console.log('Checking if \'' + key + '\' in responses..');
-
-      response = responses.get(key);
-      console.log('Response returned: ', response);
-      try {
-        if(response !== null) {
-          console.log('Trying to say this shit..');
-          bot.say(message.args[0], response);
-        }
-
-      } catch(e) {
-        console.log(e);
-      }
-    }
-  }
-});
-
-console.log('listening done bitch');
+module.exports = Bot;

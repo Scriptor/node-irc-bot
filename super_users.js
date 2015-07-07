@@ -1,10 +1,7 @@
 module.exports = {
-  nicks: ['angrywombat', 'veonik'],
+  nicks: ['angrywombat', 'veonik', 'Criten'],
 
-  is: function( nick ) {
-    if( nick in this.nicks )
-      return true;
-    else
-      return false;
+  includes: function(nick) {
+    return this.nicks.indexOf(nick) !== -1;
   }
 }
