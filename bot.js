@@ -29,7 +29,14 @@ Bot.prototype = {
 
           // Check if the user has permission to run the command
           if(this['user_can_' + cmd.group](from)) {
-            cmd.func.apply(this, [to, parts.params]);
+            switch(typeof cmd.func) {
+              case 'function':
+                cmd.func.apply(this, [to, parts.params]);
+              break;
+              case 'string':
+                this.stream.say(to, cmd.func);
+              break;
+            }
           } else {
             this.stream.say(to, 'You\'re too useless to do that!');
           }
@@ -72,6 +79,12 @@ Bot.prototype = {
   */
   load_command_block: function(group, commands) {
     for(var name in commands) {
+      // skip if it's a duplicate
+      if(typeof this.commands[name] !== 'undefined') {
+        console.log(name + ' IS ALREADY DEFINED!');
+        continue;
+      }
+
       this.commands[name] = {
         group: group,
         func:  commands[name]
