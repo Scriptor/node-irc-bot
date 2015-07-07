@@ -87,8 +87,10 @@ Bot.prototype = {
   _parse_command: function(string) {
     string = string.slice(this.token.length, string.length);
 
+    var fs = string.indexOf(' ');
+
     return {
-      name: string.substr(0, string.indexOf(' ')),
+      name: (fs == -1 ? string : string.substr(0, fs)),
       params: string.substr(string.indexOf(' '), string.length)
     };
   }
