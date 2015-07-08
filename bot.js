@@ -7,6 +7,7 @@ var Bot = function(name, password, token, stream) {
   this.stream   = stream;
   this.password = password;
   this.commands = {};
+  this.previous_nick = '';
 };
 
 Bot.prototype = {
@@ -47,6 +48,8 @@ Bot.prototype = {
         }
       }
     }
+
+    this.previous_nick = from;
   },
 
  /* processAlias
@@ -69,7 +72,7 @@ Bot.prototype = {
         if(isNaN(var_name)) {
           switch(var_name) {
             case 'prev':
-              string = string.replace(template_element, "PREVIOUSNICK");
+              string = string.replace(template_element, this.previous_nick);
             break;
             case 'user':
               string = string.replace(template_element, from);

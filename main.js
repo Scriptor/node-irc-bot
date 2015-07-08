@@ -24,3 +24,26 @@ bot.load_command_block('normal', AliasCommands);
 console.log(' -- Adding Listeners --');
 client.addListener('registered', bot.authenticate.bind(bot));
 client.addListener('message', bot.consumeCommand.bind(bot));
+
+
+/*** lots of bots
+var numbots = 5;
+var clients = [];
+var bots = [];
+
+for(var i=0; i<numbots; i++) {
+  console.log(' -- Connecting to IRC --');
+  clients[i] = new irc.Client(config.server, config.botName+i, options);
+
+  console.log(' -- Creating Bot Instance --');
+  bots[i] = new Bot(config.botName + i, config.botPass, config.alias_token, clients[i]);
+
+  // Populate our bot with da knowledge
+  bots[i].load_command_block('super', SuperCommands);
+  bots[i].load_command_block('normal', NormalCommands);
+  bots[i].load_command_block('normal', AliasCommands);
+
+  console.log(' -- Adding Listeners --');
+  clients[i].addListener('message', bots[i].consumeCommand.bind(bots[i]));
+}
+****/
