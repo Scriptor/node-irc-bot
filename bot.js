@@ -1,14 +1,15 @@
 var IgnoredUsers = require('./ignored_users.js');
 var SuperUsers = require('./super_users.js');
+var Logger         = require('./logger.js');
 
-var Bot = function(name, password, token, stream, logger) {
+var Bot = function(name, password, token, stream) {
   this.name     = name;
   this.token    = token;
   this.stream   = stream;
   this.password = password;
   this.commands = {};
   this.previous_nick = '';
-  this.logger   = logger;
+  this.logger   = new Logger({log_file:"lols.txt"}, this.stream);
 };
 
 Bot.prototype = {
@@ -20,9 +21,6 @@ Bot.prototype = {
   consumeCommand: function(from, to, message) {
     // If you're ignored you can't do anything
     if(!IgnoredUsers.includes(from)) {
-
-      // Log it (mainly for s/whatever/whatever operations)
-      logger.write(message);
 
       // Do we have our command token?
       if(message.indexOf(this.token) === 0) {
@@ -46,11 +44,11 @@ Bot.prototype = {
             this.stream.say(to, 'You\'re too useless to do that!');
           }
 
-        // The command doesn't exist
-        } else {
-          this.stream.say(to, 'Command not found!');
         }
-      }
+      } else {
+          // Log it (mainly for s/whatever/whatever operations)
+          this.logger.write(from, to, message);
+        }
     }
 
     this.previous_nick = from;

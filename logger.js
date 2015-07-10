@@ -1,14 +1,25 @@
-module.exports = {
-	write: function(message){
-		var filename = this.config.log_file;
-		fs.appendFile(filename, message+"\n");
-	},
-	find: function(key){
-		var filename = this.config.log_file;
-		fs.readFile(filename, function(err, data){
-			if(err) throw err;
-			console.log("Found key " + key + " in " + data);
-			this.stream.say("Found a match");
-		});
-	}
+var fs = require('fs');
+
+var Logger = function(config, stream){
+  this.config = config;
+  this.stream = stream;
+  this.fs = fs;
 }
+
+Logger.prototype = {
+  write: function(from, to, message){
+    var filename = this.config.log_file,
+      timestamp = new Date(),
+      log = from + ": " + message + "\n";
+      this.fs.appendFile(filename, log);
+  },
+  find: function(key){
+    var filename = this.config.log_file;
+    console.log("in find of logger proto");
+    var contents = this.fs.readFileSync(filename, "utf8");
+    console.log(contents);
+    this.stream.say(key);
+  }
+}
+
+module.exports = Logger;

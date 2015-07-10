@@ -655,7 +655,6 @@ module.exports = {
   "techsupport":"http://i.imgur.com/S8mYnWq.png",
   "tesla":"I'M PUSHING AGAINST THE ENTROPY, BUT THE KNITTED CASTLE GROWS http://i.imgur.com/VuNPlRt.png",
   "teslanick":"http://i.imgur.com/iAQil.jpg",
-  "test":"test",
   "test2":"\x01 ACTION tests\x01",
   "test3 test4":"test5",
   "testhi":"Hi, {user}!",
