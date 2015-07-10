@@ -1,13 +1,14 @@
 var IgnoredUsers = require('./ignored_users.js');
 var SuperUsers = require('./super_users.js');
 
-var Bot = function(name, password, token, stream) {
+var Bot = function(name, password, token, stream, logger) {
   this.name     = name;
   this.token    = token;
   this.stream   = stream;
   this.password = password;
   this.commands = {};
   this.previous_nick = '';
+  this.logger   = logger;
 };
 
 Bot.prototype = {
@@ -19,6 +20,9 @@ Bot.prototype = {
   consumeCommand: function(from, to, message) {
     // If you're ignored you can't do anything
     if(!IgnoredUsers.includes(from)) {
+
+      // Log it (mainly for s/whatever/whatever operations)
+      logger.write(message);
 
       // Do we have our command token?
       if(message.indexOf(this.token) === 0) {
@@ -149,5 +153,6 @@ Bot.prototype = {
     };
   }
 };
+
 
 module.exports = Bot;
