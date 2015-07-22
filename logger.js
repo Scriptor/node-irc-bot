@@ -15,10 +15,12 @@ Logger.prototype = {
   },
   find: function(key){
     var filename = this.config.log_file;
-    console.log("in find of logger proto");
     var contents = this.fs.readFileSync(filename, "utf8");
-    console.log(contents);
-    this.stream.say(key);
+		var regex = new RegExp(".*\\: " + key.trim() + ".*\\n");
+		var match = contents.match(regex);
+		return match;
+		
+		console.log("matched: " + match);
   }
 }
 
