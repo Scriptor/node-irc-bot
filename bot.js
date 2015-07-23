@@ -100,7 +100,7 @@ Bot.prototype = {
   authenticate: function() {
     // Auth bot
     console.log('Attempting Authentication');
-    this.stream.say('NICKSERV', 'identify' + this.password);
+    this.stream.say('NICKSERV', 'identify ' + this.password);
   },
 
  /* user_can_{group_name}
