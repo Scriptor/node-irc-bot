@@ -1,6 +1,12 @@
 module.exports = {
-  test: function(chan, message) {
-    this.stream.say(chan, 'Test command! - ' + message);
+  topic: function(chan, message, from){
+    var new_title = message.trim() + " (" + from + ")";
+    console.log("Attempting to set topic to " + new_title);
+    try{
+      var result = this.stream.send("TOPIC", chan, new_title);
+    } catch (err) {
+      console.log("Error detected");
+    }
   },
   test_two: function(chan, message) {
     this.stream.say(chan, 'Test command 2! - ' + message);

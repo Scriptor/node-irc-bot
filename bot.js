@@ -34,7 +34,7 @@ Bot.prototype = {
           if(this['user_can_' + cmd.group](from)) {
             switch(typeof cmd.func) {
               case 'function':
-                cmd.func.apply(this, [to, parts.params]);
+                cmd.func.apply(this, [to, parts.params, from]);
               break;
               case 'string':
                 this.processAlias(to, from, cmd.func, parts.params);
