@@ -22,9 +22,10 @@ Bot.prototype = {
     // If you're ignored you can't do anything
     if(!IgnoredUsers.includes(from)) {
 
+      var parts =  this._parse_command(message);
+      
       // Do we have our command token?
       if(message.indexOf(this.token) === 0) {
-        var parts =  this._parse_command(message);
 
         // Check if the command is in our commands object
         if(typeof this.commands[parts.name] === 'object') {
@@ -46,8 +47,16 @@ Bot.prototype = {
 
         }
       } else {
-          // Log it (mainly for s/whatever/whatever operations)
-          this.logger.write(from, to, message);
+          console.log("This isn't an alias or a command");
+          if( message.indexOf("s/") == 0 ){
+            console.log("Search/replace thing");
+            // trying to do the search/replace thing
+            var cmd = this.commands.s;
+            cmd.apply(this, [to, parts.params, from]);
+          }else{
+            // Log it (mainly for s/whatever/whatever operations)
+            this.logger.write(from, to, message);
+          }
         }
     }
 

@@ -8,10 +8,7 @@ module.exports = {
       console.log("Error detected");
     }
   },
-  test_two: function(chan, message) {
-    this.stream.say(chan, 'Test command 2! - ' + message);
-  },
-  s: function(chan, message) {
+  s: function(chan, message, from) {
   	console.log("Search command");
 		console.log(message);
   	try{
