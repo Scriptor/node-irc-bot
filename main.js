@@ -14,7 +14,7 @@ console.log(' -- Connecting to IRC --');
 var client = new irc.Client(config.server, config.botName, options);
 
 // console.log(' -- Logger --');
-// var logger = 
+// var logger =
 
 console.log(' -- Creating Bot Instance --');
 var bot = new Bot(config.botName, config.botPass, config.alias_token, client);
@@ -22,12 +22,14 @@ var bot = new Bot(config.botName, config.botPass, config.alias_token, client);
 // Populate our bot with da knowledge
 bot.load_command_block('super', SuperCommands);
 bot.load_command_block('normal', NormalCommands);
-bot.load_command_block('normal', AliasCommands);
+// bot.load_command_block('normal', AliasCommands);
 
 console.log(' -- Adding Listeners --');
 client.addListener('registered', bot.authenticate.bind(bot));
 client.addListener('message', bot.consumeCommand.bind(bot));
-
+client.addListener('error', function(message) {
+    console.log('error: ', message);
+});
 
 /*** lots of bots
 var numbots = 5;

@@ -8,19 +8,20 @@ module.exports = {
       console.log("Error detected");
     }
   },
-  test_two: function(chan, message) {
-    this.stream.say(chan, 'Test command 2! - ' + message);
-  },
-  s: function(chan, message) {
+  s: function(chan, message, from) {
   	console.log("Search command");
-		console.log(message);
-  	try{
-	 		var match = this.logger.find(message);
-			if( match !== null ) {
-				var result = message.params.replace(message, message[1]);
+    try{
+      var parts = message.split("/");
+	 		var match = this.logger.find(chan, parts[1], 5000);
+
+      if( match !== null ) {
+        console.log(match);
+				var result = match.replace(parts[1], "_" + parts[2] + "_");
+        // String.fromCharCode(parseInt("0002",16))
 			}else{
 				var result = "Can't find anything.";
 			}
+
 			this.stream.say(chan, result);
   	} catch (err) {
   		console.log("delicious error found", err);
