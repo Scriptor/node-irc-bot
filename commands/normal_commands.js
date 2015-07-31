@@ -11,11 +11,11 @@ module.exports = {
   test_two: function(chan, message) {
     this.stream.say(chan, 'Test command 2! - ' + message);
   },
-  s: function(chan, message) {
+  s: function(chan, message, from) {
   	console.log("Search command");
     try{
       var parts = message.split("/");
-	 		var match = this.logger.find(parts[1], 5000);
+	 		var match = this.logger.find(chan, parts[1], 5000);
 			
       if( match !== null ) {
         console.log(match);
