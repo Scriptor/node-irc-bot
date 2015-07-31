@@ -8,19 +8,22 @@ var Logger = function(config, stream){
 
 Logger.prototype = {
   write: function(from, to, message){
-    var filename = this.config.log_file,
+    var filename = to + ".txt",
       timestamp = new Date(),
-      log = from + ": " + message + "\n";
+      log = "<" + from + ">" + ": " + message + "\n";
       this.fs.appendFile(filename, log);
   },
-  find: function(key){
-    var filename = this.config.log_file;
-    var contents = this.fs.readFileSync(filename, "utf8");
-		var regex = new RegExp(".*\\: " + key.trim() + ".*\\n");
-		var match = contents.match(regex);
-		return match;
-		
-		console.log("matched: " + match);
+  find: function(chan, key, log_lines){
+    console.log("Trying to find '" + key + "' in logs..");
+    var contents = this.fs.readFileSync(chan + ".txt", "utf8").split("\n").reverse();
+    var contents = contents.splice(contents.length - (log_lines + 1), log_lines);
+  	var regex = new RegExp(".*\\: .*" + key.trim() + ".*");
+    for( i = 0; i < log_lines; i++ ){
+  		var match = contents[i].match(regex);
+      if( match !== null ){
+        return match[0];
+      }
+    }
   }
 }
 

@@ -23,7 +23,7 @@ Bot.prototype = {
     if(!IgnoredUsers.includes(from)) {
 
       var parts =  this._parse_command(message);
-      
+
       // Do we have our command token?
       if(message.indexOf(this.token) === 0) {
 
@@ -51,8 +51,7 @@ Bot.prototype = {
           if( message.indexOf("s/") == 0 ){
             console.log("Search/replace thing");
             // trying to do the search/replace thing
-            var cmd = this.commands.s;
-            cmd.apply(this, [to, parts.params, from]);
+            this.commands.s.func.apply(this, [to, message, from]);
           }else{
             // Log it (mainly for s/whatever/whatever operations)
             this.logger.write(from, to, message);
