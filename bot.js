@@ -42,7 +42,7 @@ Bot.prototype = {
               break;
             }
           } else {
-            this.stream.say(to, 'You\'re too useless to do that!');
+            this.stream.say(to, 'Lol nah, try sudo or something.');
           }
 
         }
@@ -108,7 +108,9 @@ Bot.prototype = {
   authenticate: function() {
     // Auth bot
     console.log('Attempting Authentication');
-    this.stream.say('NICKSERV', 'identify ' + this.password);
+    if( typeof this.password !== 'undefined' ){
+      this.stream.say('NICKSERV', 'identify ' + this.password);
+    }
   },
 
  /* user_can_{group_name}
@@ -128,12 +130,18 @@ Bot.prototype = {
   * Loads the command block into the correct grouping. This allows
   * us to dynamically load blocks of commands from command modules.
   */
-  load_command_block: function(group, commands) {
+  load_command_block: function(group, commands, reload) {
     for(var name in commands) {
-      // skip if it's a duplicate
+      
+      // duplicate check
       if(typeof this.commands[name] !== 'undefined') {
-        console.log(name + ' IS ALREADY DEFINED!');
-        continue;
+        // if reload is undefined then we can check dupes
+        if(typeof reload === 'undefined'){
+          console.log(name + ' IS ALREADY DEFINED!');
+          continue;
+        }else{
+          console.log('Reloading command ' + name);
+        }
       }
 
       this.commands[name] = {
