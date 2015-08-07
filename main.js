@@ -7,7 +7,8 @@ var AliasCommands  = require('./commands/alias_commands.js');
 var NormalCommands = require('./commands/normal_commands.js');
 
 var options = {
-  channels: config.channels
+  channels: config.channels,
+  autoRejoin: true
 };
 
 console.log(' -- Connecting to IRC --');
@@ -22,7 +23,7 @@ var bot = new Bot(config.botName, config.botPass, config.alias_token, client);
 // Populate our bot with da knowledge
 bot.load_command_block('super', SuperCommands);
 bot.load_command_block('normal', NormalCommands);
-// bot.load_command_block('normal', AliasCommands);
+bot.load_command_block('normal', AliasCommands);
 
 console.log(' -- Adding Listeners --');
 client.addListener('registered', bot.authenticate.bind(bot));

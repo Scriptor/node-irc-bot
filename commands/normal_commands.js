@@ -59,7 +59,7 @@ module.exports = {
     if( belligerent_straw == 1 ){
       try{
         this.stream.say(chan, from + ": I'm the juggernaut, bitch.");
-        this.stream.send("KICK", chan, user);
+        this.stream.send("KICK", chan, from);
       }catch (e) {
         console.log("Maybe kick, definite error: " + e);
       }
