@@ -7,6 +7,9 @@ module.exports = {
   invite: function(chan, message) {
     var invitees = message.split(" ");
     for( i = 1; i < invitees.length; i++ ){
+      if( invitees[i] == 'timeshifter' )
+          continue;
+
       console.log("Inviting user " + invitees[i]);
       this.stream.send("INVITE", invitees[i], chan);
     }
