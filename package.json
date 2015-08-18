@@ -1,0 +1,23 @@
+{
+  "name": "angrywombot",
+  "version": "0.0.1",
+  "description": "A shitty IRC bot for ##webdevvit on Freenode",
+  "main": "main.js",
+  "scripts": {
+    "test": "npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@bitbucket.org/omgramrod/angrywombot.git"
+  },
+  "keywords": [
+    "irc",
+    "bot"
+  ],
+  "author": "angrywombat",
+  "license": "ISC",
+  "homepage": "https://bitbucket.org/omgramrod/angrywombot#readme",
+  "dependencies": {
+    "irc": "^0.3.12"
+  }
+}
