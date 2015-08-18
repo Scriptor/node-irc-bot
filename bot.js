@@ -97,7 +97,11 @@ Bot.prototype = {
     }
 
     // Output processed template
-    this.stream.say(channel, string);
+    if( string.substring(0, 3) == "/me" ){
+        this.stream.action(channel, string.substring(3));
+    }else{
+        this.stream.say(channel, string);
+    }
   },
 
  /* authenticate
