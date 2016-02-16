@@ -1,5 +1,5 @@
 module.exports = {
-  nicks: ['angrywombat', 'Criten', 'mtyson'],
+  nicks: ['angrywombat', 'Criten'],
 
   includes: function(nick) {
     return this.nicks.indexOf(nick) !== -1;

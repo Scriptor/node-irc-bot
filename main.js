@@ -5,11 +5,14 @@ var config         = require('./config.js');
 var SuperCommands  = require('./commands/super_commands.js');
 var AliasCommands  = require('./commands/alias_commands.js');
 var NormalCommands = require('./commands/normal_commands.js');
-
+var sqlite3 = require('sqlite3').verbose();
+var figlet = require('figlet');
+var db = new sqlite3.Database('/home/angrywombat/nodes/angrywombot/angrywombot.db');
 var options = {
   channels: config.channels,
   autoRejoin: true
 };
+
 
 console.log(' -- Connecting to IRC --');
 var client = new irc.Client(config.server, config.botName, options);
@@ -30,10 +33,15 @@ client.addListener('registered', bot.authenticate.bind(bot));
 client.addListener('message', bot.consumeCommand.bind(bot));
 client.addListener('error', function(message) {
     console.log('error: ', message);
+    bot.stream.say('DISGUSTING CHANSERV ERROR: ' + message);
+});
+client.addListener('part', function(message){
+    console.log(message);
+    console.log('some shithead left!');
 });
 
 /*** lots of bots
-var numbots = 5;
+var numbots = 10;
 var clients = [];
 var bots = [];
 

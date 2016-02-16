@@ -1,8 +1,9 @@
 var IgnoredUsers = require('./ignored_users.js');
 var SuperUsers = require('./super_users.js');
 var Logger         = require('./logger.js');
+var figlet = require('figlet');
 
-var Bot = function(name, password, token, stream) {
+var Bot = function(name, password, token, stream, http_sniffer, figlet) {
   this.name     = name;
   this.token    = token;
   this.stream   = stream;
@@ -10,7 +11,11 @@ var Bot = function(name, password, token, stream) {
   this.commands = {};
   this.previous_nick = '';
   this.logger   = new Logger({log_file:"lols.txt"}, this.stream);
+  this.http_sniffer = http_sniffer;
+  this.figlet = figlet;
 };
+
+// temp
 
 Bot.prototype = {
  /* consumeMessage
@@ -20,7 +25,14 @@ Bot.prototype = {
   */
   consumeCommand: function(from, to, message) {
     // If you're ignored you can't do anything
-    if(!IgnoredUsers.includes(from)) {
+    try{
+/*        var from = from.trim();
+        if( from == 'omfgtora' || from == 'gofsckyourself' ){
+		console.log("killing tora");
+                this.stream.send("KICK", to, from, "unlucky");
+                return;
+        }*/
+      if(!IgnoredUsers.includes(from)) {
 
       var parts =  this._parse_command(message);
 
@@ -45,20 +57,31 @@ Bot.prototype = {
             this.stream.say(to, 'Lol nah, try sudo or something.');
           }
 
+        }else{
+        console.log("possible alias?");
+         console.log(message);
         }
       } else {
           console.log("This isn't an alias or a command");
-          if( message.indexOf("s/") == 0 ){
+          if( message.indexOf("r/") == 0 ){
             console.log("Search/replace thing");
             // trying to do the search/replace thing
-            this.commands.s.func.apply(this, [to, message, from]);
+            this.commands.s.func.apply(this, [to, message, from, true]);
+
+          }else if(message.indexOf("s/") == 0){
+              console.log("Funny search/replace thing");
+              this.commands.s.func.apply(this, [to, message, from, false]);
+          }else if(message.indexOf("http") == 0){
+            //this.http_sniffer.sniff(to, message, from);
           }else{
             // Log it (mainly for s/whatever/whatever operations)
             this.logger.write(from, to, message);
           }
         }
     }
-
+    } catch( err ){
+         console.log("Consumption error: ", err);
+    }
     this.previous_nick = from;
   },
 
@@ -91,7 +114,11 @@ Bot.prototype = {
         } else {
           parts = param_string.split(',');
 
-          string = string.replace(template_element, parts[parseInt(var_name)].trim());
+          try{
+              string = string.replace(template_element, parts[parseInt(var_name)].trim());
+          } catch( e ) {
+              console.log(e);
+          }
         }
       }
     }
@@ -136,7 +163,7 @@ Bot.prototype = {
   */
   load_command_block: function(group, commands, reload) {
     for(var name in commands) {
-      
+
       // duplicate check
       if(typeof this.commands[name] !== 'undefined') {
         // if reload is undefined then we can check dupes
