@@ -68,19 +68,6 @@ module.exports = {
     }
 
     this.stream.last_kicker = from;
-
-    /*if( this.stream.kick_expiry !== undefined ){
-        var diff = now - this.stream.kick_expiry;
-        console.log(this.stream.kick_expiry);
-        this.stream.say(chan, "You can't do that until " + new Date(this.stream.kick_expiry).toString());
-        if( now > 0 ) {
-            console.log("now diff is " + new Date(diff).toISOString());
-            return;
-        }else{
-            console.log("looks like this kick can happen?");
-        }
-    }*/
-
     this.stream.kick_expiry = now.setHours( now.getHours() +1);
 
     // Possibly kick the target
@@ -112,88 +99,6 @@ module.exports = {
       }
     }
   },
-  lolfight: function(chan, message, from) {
-    this.stream.say(chan, "I will not participate in this butchery");
-    return;
-    var players = [],
-      participants = message.split(" "),
-      actions = [
-        '{0} smashes {1} in the face with a {2}',
-        '{0} eviscerates {1} while using {2} as a sex toy',
-        '{0} blames {1} for setting fire to the {2}',
-        'A REAL SLOBBERKNOCKER HAS STARTED BETWEEN {0} and {1}'
-      ],
-      objects = [
-        'elephant teeth',
-        'large dildo',
-        'PaperMate(r) FLAIR M pen (blue)',
-        'PaperMate(r) FLAIR M pen (red)',
-        'PaperMate(r) FLAIR M pen (black)',
-        'rusty razor blade',
-        'Nokia brick phone',
-        'dead mouse tail',
-        'Coraline'
-      ],
-      game_id = Math.floor(Math.random() * 1000),
-      prefix = "[Fight Game " + game_id + "] - ",
-      everyone_dead = false;
-
-    participants = participants.filter( onlyUnique );
-
-    // Add players
-    for( i in participants ){
-      var p = participants[i];
-      if( p.length > 0 ){
-        players.push(p);
-      }
-    }
-
-    console.log(participants, players);
-    if( players.length <= 1 ){
-      // @TODO just randomly grab users in the channel
-      console.log("Not enough people to fight");
-      return;
-    }
-
-    do {
-      // Generate the announcement
-      var annouce_i = Math.floor(Math.random() * actions.length),
-          player_1 = Math.floor(Math.random() * players.length),
-          player_2 = Math.floor(Math.random() * players.length),
-          object_i = Math.floor(Math.random() * objects.length);
-
-      console.log(players[ player_1 ]);
-      console.log(players[ player_2 ]);
-      console.log(objects[ object_i ]);
-
-      var message = actions[ annouce_i ];
-      message.replace('{0}', players[ player_1 ]);
-      message.replace('{1}', players[ player_2 ]);
-      message.replace('{2}', objects[ object_i ]);
-
-
-      // Determine who will die
-      var i = [ Math.floor(Math.random() * players.length) ];
-      this.stream.send("KICK", chan, players[i]);
-      players.splice(i, 1);
-
-      // Announce! Try to imagine this as JR from WWE
-      this.stream.say(chan, prefix + message);
-
-      // Lets see if anyone is left
-      if( players.length <= 1 ) {
-        // Winner
-        this.stream.say(chan, prefix + players[0] + " is the winner!");
-        everyone_dead = true;
-      }
-
-      // Slow it down
-      //sleep(2);
-    }
-    while( everyone_dead === false );
-
-
-  },
   ascii: function(chan, message, from) {
     this.stream.say(chan, from + ": Fuck you.");
   },
@@ -223,24 +128,8 @@ module.exports = {
           console.log('no figlet');
       }
   },
-  /*rename: function(chan, message, from) {
-      var tora_check = from.toLowerCase();
-      return this.stream.say(chan, "Tora is why we can't have nice things.");
-        if( tora_check == "omfgtora" || tora_check == "gofsckurself" || tora_check == "gofsckyourself" || tora_check == "tora_" ){
-            this.stream.send("KICK", chan, from, "1 + 1 = fuck you");
-        }
-      var new_name = message.trim().split(' ');
-      console.log('Renaming to ', message.trim());
-      this.stream.send('NICK', new_name[0]);
-  },*/
   slap: function(chan, message, from){
       this.stream.send("KICK", chan, from, "this is a timeshifter alias!");
-  },
-  fag: function(chan, message, from){
-    console.log('Saying ascii fag');
-    this.stream.say(chan, ' __    __  __  __ ___    ');
-    this.stream.say(chan, '|_ /\ / _ / _ /  \ |   | ');
-    this.stream.say(chan, '| /--\\__)\__)\__/ |   . ');
   },
   ladies: function(chan, message, from){
       this.stream.say(chan, '( ͡° ͜ʖ ͡° )');

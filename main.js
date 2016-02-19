@@ -17,9 +17,6 @@ var options = {
 console.log(' -- Connecting to IRC --');
 var client = new irc.Client(config.server, config.botName, options);
 
-// console.log(' -- Logger --');
-// var logger =
-
 console.log(' -- Creating Bot Instance --');
 var bot = new Bot(config.botName, config.botPass, config.alias_token, client);
 

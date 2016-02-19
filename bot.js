@@ -26,12 +26,6 @@ Bot.prototype = {
   consumeCommand: function(from, to, message) {
     // If you're ignored you can't do anything
     try{
-/*        var from = from.trim();
-        if( from == 'omfgtora' || from == 'gofsckyourself' ){
-		console.log("killing tora");
-                this.stream.send("KICK", to, from, "unlucky");
-                return;
-        }*/
       if(!IgnoredUsers.includes(from)) {
 
       var parts =  this._parse_command(message);
