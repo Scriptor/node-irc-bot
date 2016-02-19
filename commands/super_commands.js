@@ -19,12 +19,12 @@ module.exports = {
     this.load_command_block('normal', AliasCommands, true);
   },
   invites_on: function(chan, message){
-      this.stream.send(chan, "MODE +i");
-      this.stream.say("Invite-only mode has been turned on. Remember to /msg chanserv invite ##webdevvit if you get locked out.");
+      this.stream.send("MODE", chan, "+i");
+      this.stream.say(chan, "Invite-only mode has been turned on. Remember to /msg chanserv invite " + chan + " if you get locked out.");
   },
   invites_off: function(chan, message){
-      this.stream.send(chan, "MODE -i");
-      this.stream.say("This channel is no longer in invite-only mode.");
+      this.stream.send("MODE", chan, "-i");
+      this.stream.say(chan, "This channel is no longer in invite-only mode.");
   },
   timeout: function(chan, message){
       console.log("Trying to get everyone to stfu");
