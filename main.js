@@ -68,28 +68,40 @@ client.addListener('join', function(chan, nick){
   if( bot.name == nick ){
     bot.stream.say(chan, 'I AM HERE PLS CALM DOWN');
   }else{
-    bot.stream.say(chan, 'welcome to ' + chan + ', ' + nick + ', pls dont be fggy'); 
+    bot.stream.whois(nick, function(data){
+      try{
+        if( data.account !== undefined && data.accountinfo !== undefined ){
+          bot.stream.say(chan, 'welcome to ' + chan + ', ' + nick + ', pls dont be fggy');   
+        }else{
+          bot.stream.send('KICK', chan, nick, 'auth to nickserv you scum');
+        }
+      } catch (err) {
+        // error listener will handle
+      }
+    });
   }
 });
 
-/*** lots of bots
-var numbots = 10;
-var clients = [];
-var bots = [];
-
-for(var i=0; i<numbots; i++) {
-  console.log(' -- Connecting to IRC --');
-  clients[i] = new irc.Client(config.server, config.botName+i, options);
-
-  console.log(' -- Creating Bot Instance --');
-  bots[i] = new Bot(config.botName + i, config.botPass, config.alias_token, clients[i]);
-
-  // Populate our bot with da knowledge
-  bots[i].load_command_block('super', SuperCommands);
-  bots[i].load_command_block('normal', NormalCommands);
-  bots[i].load_command_block('normal', AliasCommands);
-
-  console.log(' -- Adding Listeners --');
-  clients[i].addListener('message', bots[i].consumeCommand.bind(bots[i]));
+if( process.argv[2] !== undefined )
+{
+  // Subtract one because we're already running one up yonder
+  var numbots = parseInt(process.argv[2]) - 1;
+  var clients = [];
+  var bots = [];
+  
+  for(var i=0; i<numbots; i++) {
+    console.log(' -- Connecting to IRC --');
+    clients[i] = new irc.Client(config.server, config.botName+i, options);
+  
+    console.log(' -- Creating Bot Instance --');
+    bots[i] = new Bot(config.botName + i, config.botPass, config.alias_token, clients[i]);
+  
+    // Populate our bot with da knowledge
+    bots[i].load_command_block('super', SuperCommands);
+    bots[i].load_command_block('normal', NormalCommands);
+    bots[i].load_command_block('normal', AliasCommands);
+  
+    console.log(' -- Adding Listeners --');
+    clients[i].addListener('message', bots[i].consumeCommand.bind(bots[i]));
+  }  
 }
-****/
