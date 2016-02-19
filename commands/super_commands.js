@@ -66,7 +66,9 @@ module.exports = {
         }
       }); 
     }
-    
+  },
+  leave: function(chan, message, from){
+    this.stream.send('PART', chan);
   }
 
 };
