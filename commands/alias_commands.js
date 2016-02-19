@@ -769,7 +769,6 @@ module.exports = {
   "thundernips": "http://i.imgur.com/jfpDNPR.png",
   "guys": "http://i.imgur.com/iobJtA1.jpg",
   "maybe_lick": "{0}: IM GONNA LICK YOUR ANUS",
-  "whois": "{0} is logged in as {0}; {0} has been idle for 00:00:01; {0} has been an online faggot since Sun Oct 11 2015 23:14:08",
   "^^": "↑ ᶠᵘᶜᵏ ᵗʰᶦˢ ᵍᵘʸ ↑",
   "sak": "saklovich: ヽヽ༼༼ຈຈل͜ل͜ຈຈ༽༽ﾉﾉ  TURN OFF THE VIBRATOR ヽヽ༼༼ຈຈل͜ل͜ຈຈ༽༽ﾉﾉ",
   "salt": "ヽヽ｀ヽ｀、ヽヽ｀ヽ｀、ヽヽ｀ヽ、ヽヽ｀ヽ｀、ヽヽ｀ヽ｀、｀、ヽヽ｀ヽ｀、ヽヽ｀ヽ｀、ヽヽ｀ヽ｀、ヽヽ｀ヽ｀、ヽヽ｀ヽ｀、ヽヽ｀ヽ｀、ヽヽ༼ຈ ل͜ຈ༽ﾉ☂ ɪᴛs ʀᴀɪɴɪɴɢ sᴀʟᴛ! ヽ༼ຈل͜ຈ༽ﾉ☂ ヽ｀ヽ｀、ヽヽ｀ヽ｀、｀ヽ｀、ヽヽ｀ヽ｀、ヽヽ｀ヽ、ヽヽ｀ヽ",

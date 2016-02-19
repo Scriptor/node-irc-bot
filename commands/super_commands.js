@@ -45,5 +45,28 @@ module.exports = {
       console.log('Renaming to ', message.trim());
       this.stream.send('NICK', new_name[0]);
   },
+  users: function(chan, message){
+    this.stream.list(chan);
+  },
+  whois: function(chan, message, from){
+    var users = message.trim().split(' ');
+    console.log('checking the following users');
+    console.log(users);
+    for( var i in users ){
+      var that = this;
+      that.stream.whois(users[i], function(message){
+        try{
+          if( message.account !== undefined && message.accountinfo !== undefined ){
+            that.stream.say(chan, message.nick + ' is totes authed to chanserv');
+          }else{
+            that.stream.say(chan, message.nick + ' doesnt look authed to chanserv, kick that motherfucker!');
+          }
+        } catch (err) {
+          console.log(err);
+        }
+      }); 
+    }
+    
+  }
 
 };

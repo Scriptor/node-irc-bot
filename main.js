@@ -7,7 +7,7 @@ var AliasCommands  = require('./commands/alias_commands.js');
 var NormalCommands = require('./commands/normal_commands.js');
 var sqlite3 = require('sqlite3').verbose();
 var figlet = require('figlet');
-var db = new sqlite3.Database('/home/angrywombat/nodes/angrywombot/angrywombot.db');
+var db = new sqlite3.Database('angrywombot.db');
 var options = {
   channels: config.channels,
   autoRejoin: true
@@ -32,12 +32,47 @@ console.log(' -- Adding Listeners --');
 client.addListener('registered', bot.authenticate.bind(bot));
 client.addListener('message', bot.consumeCommand.bind(bot));
 client.addListener('error', function(message) {
-    console.log('error: ', message);
-    bot.stream.say('DISGUSTING CHANSERV ERROR: ' + message);
+    console.log('DISGUSTING CHANSERV ERROR: ', message);
 });
 client.addListener('part', function(message){
     console.log(message);
     console.log('some shithead left!');
+});
+client.addListener('chanellist', function(message){
+  console.log('chanellist');
+  console.log(message);
+});
+
+client.addListener('channellist_start', function(message){
+  console.log('channellist_start');
+  console.log(message);
+});
+
+client.addListener('channellist_item', function(message){
+  console.log('channellist_item');
+  console.log(message);
+});
+
+client.addListener('invite', function(chan){
+  bot.stream.send('JOIN', chan);
+  bot.stream.say(chan, 'hey assholes thanks for inviting me here');
+});
+
+client.addListener('kick', function(chan, nick){
+  bot.stream.say(chan, 'haha that fgt ' + nick + ' got kicked');
+});
+
+client.addListener('part', function(chan, nick){
+  console.log('user part');
+  bot.stream.say(chan, 'so long ' + nick + ' you insatiable fgt');
+});
+
+client.addListener('join', function(chan, nick){
+  if( bot.name == nick ){
+    bot.stream.say(chan, 'I AM HERE PLS CALM DOWN');
+  }else{
+    bot.stream.say(chan, 'welcome to ' + chan + ', ' + nick + ', pls dont be fggy'); 
+  }
 });
 
 /*** lots of bots
