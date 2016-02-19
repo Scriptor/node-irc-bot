@@ -32,8 +32,8 @@ module.exports = {
   },
   quiet: function(chan, message){
     var users = message.trim().split(' ');
-    for( i in users ){
-      this.stream.send("MODE", chan, "+q " + users[i]);
+    for( var i in users ){
+      this.stream.send("MODE", chan, "+m " + users[i]);
     }
   },
   mk_reset: function(chan, message){
