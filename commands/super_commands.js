@@ -9,14 +9,17 @@ module.exports = {
     delete require.cache[require.resolve('./alias_commands.js')];
     delete require.cache[require.resolve('./super_commands.js')];
     delete require.cache[require.resolve('./normal_commands.js')];
+    delete require.cache[require.resolve('./alias.js')];
 
     // Reload the commands
     var AliasCommands  = require('./alias_commands.js');
     var SuperCommands  = require('./super_commands.js');
     var NormalCommands = require('./normal_commands.js');
+    var AliasModule     = require('./alias.js');
     this.load_command_block('super', SuperCommands, true);
     this.load_command_block('normal', NormalCommands, true);
     this.load_command_block('normal', AliasCommands, true);
+    this.load_command_block('normal', AliasModule, true);
   },
   invites_on: function(chan, message){
       this.stream.send("MODE", chan, "+i");
@@ -27,13 +30,19 @@ module.exports = {
       this.stream.say(chan, "This channel is no longer in invite-only mode.");
   },
   timeout: function(chan, message){
+    
+  },
+  savage: function(chan, message){
       console.log("Trying to get everyone to stfu");
-      this.stream.list(chan);
+      // this gets processed in the main.js event listeners
+      this.timeout_active = chan;
+      this.stream.send('NAMES', chan);
   },
   quiet: function(chan, message){
     var users = message.trim().split(' ');
     for( var i in users ){
       this.stream.send("MODE", chan, "+m " + users[i]);
+      this.strean.say(chan, 'Tell me, Mr. ' + users[i] + '... what good is a phone call... if you\'re unable to speak?')
     }
   },
   mk_reset: function(chan, message){

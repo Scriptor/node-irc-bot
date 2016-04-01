@@ -1,9 +1,11 @@
 var IgnoredUsers = require('./ignored_users.js');
 var SuperUsers = require('./super_users.js');
 var Logger         = require('./logger.js');
-var figlet = require('figlet');
+require('./db.js');
 
-var Bot = function(name, password, token, stream, http_sniffer, figlet) {
+
+
+var Bot = function(name, password, token, stream, db) {
   this.name     = name;
   this.token    = token;
   this.stream   = stream;
@@ -11,13 +13,17 @@ var Bot = function(name, password, token, stream, http_sniffer, figlet) {
   this.commands = {};
   this.previous_nick = '';
   this.logger   = new Logger({log_file:"lols.txt"}, this.stream);
-  this.http_sniffer = http_sniffer;
-  this.figlet = figlet;
+  this.figlet = null;
+  var sqlite3 = require('sqlite3').verbose();
+  var db = new sqlite3.Database('angrywombot.db');
+  this.db = db;
+
 };
 
 // temp
 
 Bot.prototype = {
+  timeout_active: false,
  /* consumeMessage
   *
   * Feeds a message through the bot's engine
@@ -32,10 +38,13 @@ Bot.prototype = {
 
       // Do we have our command token?
       if(message.indexOf(this.token) === 0) {
+        console.log(this.commands);
 
         // Check if the command is in our commands object
         if(typeof this.commands[parts.name] === 'object') {
+          console.log("Checking for command");
           var cmd = this.commands[parts.name];
+          console.log(cmd);
 
           // Check if the user has permission to run the command
           if(this['user_can_' + cmd.group](from)) {
@@ -50,10 +59,9 @@ Bot.prototype = {
           } else {
             this.stream.say(to, 'Lol nah, try sudo or something.');
           }
-
         }else{
-        console.log("possible alias?");
-         console.log(message);
+          console.log("Trying DB aliases");
+          this.commands.find.func(to, message, from, this);
         }
       } else {
           console.log("This isn't an alias or a command");
@@ -72,11 +80,16 @@ Bot.prototype = {
             this.logger.write(from, to, message);
           }
         }
+    }else{
+      console.log('User is on ignore: ' + from);
     }
     } catch( err ){
          console.log("Consumption error: ", err);
     }
     this.previous_nick = from;
+  },
+  processDbAlias: function(channel, from, string){
+    this.commands.find.func(channel, string, from, this);
   },
 
  /* processAlias
@@ -89,6 +102,7 @@ Bot.prototype = {
     var rx = /{([^}]+)}/g;
 
     var objects = string.match(rx);
+    console.log(objects);
 
     if(objects !== null) {
       for(var i=0; i<objects.length; i++) {
@@ -106,7 +120,7 @@ Bot.prototype = {
             break;
           }
         } else {
-          parts = param_string.split(',');
+          var parts = param_string.split(',');
 
           try{
               string = string.replace(template_element, parts[parseInt(var_name)].trim());
@@ -132,7 +146,7 @@ Bot.prototype = {
   */
   authenticate: function() {
     // Auth bot
-    console.log('Attempting Authentication');
+    console.log(' -- Attempting Authentication --');
     if( typeof this.password !== 'undefined' ){
       this.stream.say('NICKSERV', 'identify ' + this.password);
     }
@@ -156,8 +170,9 @@ Bot.prototype = {
   * us to dynamically load blocks of commands from command modules.
   */
   load_command_block: function(group, commands, reload) {
+    console.log(' -- Loading Command Blocks for ' + group + ' --');
     for(var name in commands) {
-
+      console.log("loading command " + name);
       // duplicate check
       if(typeof this.commands[name] !== 'undefined') {
         // if reload is undefined then we can check dupes
@@ -168,10 +183,22 @@ Bot.prototype = {
           console.log('Reloading command ' + name);
         }
       }
+      
+      if( typeof commands[name] === 'object' ){
+        // a whole module!
+        // basically the alias module for now
+        // We're assuming there is a wrapper function
+        // within this object with the name of the module itself
+        var func = commands[name][name];
+        console.log(' - Submodule found for ' + name);
+      }else{
+        // console.log('Command block found for ' + name);
+        var func = commands[name];
+      }
 
       this.commands[name] = {
         group: group,
-        func:  commands[name]
+        func: func
       };
     }
   },

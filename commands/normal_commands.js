@@ -74,7 +74,7 @@ module.exports = {
     if( target_straw == 1 ){
       try{
         if( users.length > 1 ){
-            for( i in users ) {
+            for( var i in users ) {
                 //this.stream.say(chan, users[i] + ": I'm the juggernaut, bitch.");
                 this.stream.send("KICK", chan, users[i], "I'm the juggernaut, bitch.");
             }

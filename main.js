@@ -1,3 +1,5 @@
+var db = require('./db.js');
+console.log(db);
 var irc = require('irc');
 
 var Bot            = require('./bot.js');
@@ -5,9 +7,9 @@ var config         = require('./config.js');
 var SuperCommands  = require('./commands/super_commands.js');
 var AliasCommands  = require('./commands/alias_commands.js');
 var NormalCommands = require('./commands/normal_commands.js');
+var AliasModule    = require('./commands/alias.js');
 var sqlite3 = require('sqlite3').verbose();
 var figlet = require('figlet');
-var db = new sqlite3.Database('angrywombot.db');
 var options = {
   channels: config.channels,
   autoRejoin: true
@@ -18,12 +20,13 @@ console.log(' -- Connecting to IRC --');
 var client = new irc.Client(config.server, config.botName, options);
 
 console.log(' -- Creating Bot Instance --');
-var bot = new Bot(config.botName, config.botPass, config.alias_token, client);
+var bot = new Bot(config.botName, config.botPass, config.alias_token, client, db);
 
 // Populate our bot with da knowledge
 bot.load_command_block('super', SuperCommands);
 bot.load_command_block('normal', NormalCommands);
-bot.load_command_block('normal', AliasCommands);
+// bot.load_command_block('normal', AliasCommands);
+bot.load_command_block('normal', AliasModule);
 
 console.log(' -- Adding Listeners --');
 client.addListener('registered', bot.authenticate.bind(bot));
@@ -65,21 +68,42 @@ client.addListener('part', function(chan, nick){
 });
 
 client.addListener('join', function(chan, nick){
-  if( bot.name == nick ){
-    bot.stream.say(chan, 'I AM HERE PLS CALM DOWN');
-  }else{
+  if( bot.name != nick ){
     bot.stream.whois(nick, function(data){
       try{
         if( data.account !== undefined && data.accountinfo !== undefined ){
           bot.stream.say(chan, 'welcome to ' + chan + ', ' + nick + ', pls dont be fggy');   
         }else{
-          bot.stream.send('KICK', chan, nick, 'auth to nickserv you scum');
+          bot.stream.send('MODE', chan, '+m ' + nick);
+          bot.stream.say(chan, 'pls auth to nickserv, ' + nick);
         }
       } catch (err) {
         // error listener will handle
       }
     });
   }
+});
+
+client.addListener('names', function(chan, names){
+    console.log('names!');
+    console.log(names);
+    if( bot.timeout_active !== false ){
+      var target_chan = bot.timeout_active;
+      bot.timeout_active = false;
+      console.log('Processing names..');
+      // names data struct is { nick: '', nick_2: ''}
+      // (dont ask me)
+      for( var nick in names ){
+        console.log("Might kick " + nick);
+        var target_straw = Math.round(Math.random() * 5);
+        console.log(target_straw);
+        if( target_straw == 1 ){
+          // sucks to be you
+          console.log("sucks to be " + nick);
+          bot.stream.send('KICK', target_chan, nick, 'savage!');
+        }
+      }
+    }
 });
 
 if( process.argv[2] !== undefined )
@@ -94,7 +118,7 @@ if( process.argv[2] !== undefined )
     clients[i] = new irc.Client(config.server, config.botName+i, options);
   
     console.log(' -- Creating Bot Instance --');
-    bots[i] = new Bot(config.botName + i, config.botPass, config.alias_token, clients[i]);
+    bots[i] = new Bot(config.botName + i, config.botPass, config.alias_token, clients[i], db);
   
     // Populate our bot with da knowledge
     bots[i].load_command_block('super', SuperCommands);
