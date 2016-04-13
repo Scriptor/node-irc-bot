@@ -16,10 +16,14 @@ module.exports = {
     var SuperCommands  = require('./super_commands.js');
     var NormalCommands = require('./normal_commands.js');
     var AliasModule     = require('./alias.js');
+    var Logger     = require('./../logger.js');
     this.load_command_block('super', SuperCommands, true);
     this.load_command_block('normal', NormalCommands, true);
     this.load_command_block('normal', AliasCommands, true);
     this.load_command_block('normal', AliasModule, true);
+    this.logger   = new Logger({log_file:"lols.txt"}, this.stream);
+    
+    this.stream.say(chan, 'k.');
   },
   invites_on: function(chan, message){
       this.stream.send("MODE", chan, "+i");
