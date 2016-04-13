@@ -1,7 +1,7 @@
 module.exports = {
 
   kill: function(chan, message) {
-    this.stream.say(chan, 'Goodbnye all');
+    this.stream.say(chan, 'Goodbnye all -_.');
     process.exit();
   },
   reload: function(chan, message) {
