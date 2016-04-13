@@ -64,7 +64,7 @@ client.addListener('kick', function(chan, nick){
 
 client.addListener('part', function(chan, nick){
   console.log('user part');
-  bot.stream.say(chan, 'so long ' + nick + ' you insatiable fgt');
+  //bot.stream.say(chan, 'so long ' + nick + ' you insatiable fgt');
 });
 
 client.addListener('join', function(chan, nick){
@@ -72,7 +72,7 @@ client.addListener('join', function(chan, nick){
     bot.stream.whois(nick, function(data){
       try{
         if( data.account !== undefined && data.accountinfo !== undefined ){
-          bot.stream.say(chan, 'welcome to ' + chan + ', ' + nick + ', pls dont be fggy');   
+//          bot.stream.say(chan, 'welcome to ' + chan + ', ' + nick + ', pls dont be fggy');
         }else{
           bot.stream.send('MODE', chan, '+m ' + nick);
           bot.stream.say(chan, 'pls auth to nickserv, ' + nick);
@@ -112,20 +112,20 @@ if( process.argv[2] !== undefined )
   var numbots = parseInt(process.argv[2]) - 1;
   var clients = [];
   var bots = [];
-  
+
   for(var i=0; i<numbots; i++) {
     console.log(' -- Connecting to IRC --');
     clients[i] = new irc.Client(config.server, config.botName+i, options);
-  
+
     console.log(' -- Creating Bot Instance --');
     bots[i] = new Bot(config.botName + i, config.botPass, config.alias_token, clients[i], db);
-  
+
     // Populate our bot with da knowledge
     bots[i].load_command_block('super', SuperCommands);
     bots[i].load_command_block('normal', NormalCommands);
     bots[i].load_command_block('normal', AliasCommands);
-  
+
     console.log(' -- Adding Listeners --');
     clients[i].addListener('message', bots[i].consumeCommand.bind(bots[i]));
-  }  
+  }
 }

@@ -11,11 +11,6 @@ module.exports = {
   s: function(chan, message, from, use_find) {
   	console.log("Search command");
     try{
-	var tora_check = from.toLowerCase();
-        if( tora_check == "omfgtora" || tora_check == "gofsckurself" || tora_check == "gofsckyourself" || tora_check == "tora_" ){
-            this.stream.send("KICK", chan, from, "1 + 1 = fuck you");
-            //return;
-      }
       var parts = message.split("/");
       if( use_find === false ){
           console.log("use_find is false");
@@ -103,11 +98,11 @@ module.exports = {
     this.stream.say(chan, from + ": Fuck you.");
   },
   oppls: function(chan, message, from) {
-    return this.stream.say(chan, "sorry, " + from + ", veonik is why we can't have nice things. :|");
-    var tora_check = from.toLowerCase();
+ //   return this.stream.say(chan, "sorry, " + from + ", veonik is why we can't have nice things. :|");
+    /*var tora_check = from.toLowerCase();
         if( tora_check == "omfgtora" || tora_check == "gofsckurself" || tora_check == "gofsckyourself" || tora_check == "tora_" ){
             this.stream.send("KICK", chan, from, "1 + 1 = fuck you");
-        }
+        }*/
     var bad_day = Math.round(Math.random() * 10);
     if( bad_day == 3 ){
         this.stream.send('MODE', chan, '+o', from);
