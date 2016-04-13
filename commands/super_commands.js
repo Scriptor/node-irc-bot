@@ -81,6 +81,8 @@ module.exports = {
     }
   },
   leave: function(chan, message, from){
+    console.log('LEAVING CHANNEL ' + chan);
+    this.stream.say(chan, 'ok fuck you guys then, bunch of lovichs anyway');
     this.stream.send('PART', chan);
   }
 
