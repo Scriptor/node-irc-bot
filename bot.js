@@ -66,13 +66,10 @@ Bot.prototype = {
       } else {
           console.log("This isn't an alias or a command");
           if( message.indexOf("r/") == 0 ){
-            console.log("Search/replace thing");
             // trying to do the search/replace thing
-            this.commands.s.func.apply(this, [to, message, from, true]);
-
+            this.commands.s.func.apply(this, [to, message, from, false]);
           }else if(message.indexOf("s/") == 0){
-              console.log("Funny search/replace thing");
-              this.commands.s.func.apply(this, [to, message, from, false]);
+              this.commands.s.func.apply(this, [to, message, from, true]);
           }else if(message.indexOf("http") == 0){
             //this.http_sniffer.sniff(to, message, from);
           }else{

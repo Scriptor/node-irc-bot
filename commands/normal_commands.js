@@ -9,15 +9,15 @@ module.exports = {
     }
   },
   s: function(chan, message, from, use_find) {
-  	console.log("Search command");
+  	console.log("-- Search command --");
     try{
       var parts = message.split("/");
       if( use_find === false ){
-          console.log("use_find is false");
-          var match = this.logger.search(chan, parts[1], 5000);
+          console.log("Fun mode");
+          var match = this.logger.fun_search(chan, parts[1], 5000);
       }else{
-        console.log("use_find is false or something");
-        var match = this.logger.find(chan, parts[1], 5000);
+        console.log("Srs mode");
+        var match = this.logger.srs_search(chan, parts[1], 10);
       }
 
       if( match !== null ) {
