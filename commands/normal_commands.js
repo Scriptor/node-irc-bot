@@ -35,7 +35,15 @@ module.exports = {
 			}
   	} catch (err) {
   		this.stream.say(chan, "DISGUSTING LOVICH ERROR FOUND: No matches, you fucking qwebber");
-      this.stream.send("KICK", chan, from, "HARDMODE MOTHERFUCKER");
+      
+      if( set_topic === true ){
+        // super egregious bro
+        var msg = 'AKICK ' + chan + ' ADD ' + from + ' -T 20 Twenty min timeout';
+        console.log(msg);
+        this.stream.send('MSG', 'CHANSERV',  msg);
+      }else{
+        this.stream.send("KICK", chan, from, "HARDMODE MOTHERFUCKER");
+      }
   	}
   },
 
