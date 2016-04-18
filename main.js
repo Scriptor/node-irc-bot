@@ -74,7 +74,7 @@ client.addListener('join', function(chan, nick){
         if( data.account !== undefined && data.accountinfo !== undefined ){
 //          bot.stream.say(chan, 'welcome to ' + chan + ', ' + nick + ', pls dont be fggy');
         }else{
-          bot.stream.send('MODE', chan, '+m ' + nick);
+          // bot.stream.send('MODE', chan, '+m ' + nick);
           bot.stream.say(chan, 'pls auth to nickserv, ' + nick);
         }
       } catch (err) {
