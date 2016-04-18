@@ -21,27 +21,26 @@ Logger.prototype = {
       this.srsly_log(to, log);
   },
   srsly_log: function(chan, log){
-    console.log('srs logging');
-    console.log(this.srs_log);
+    //console.log('srs logging');
     var chan = chan.replace('#', 'chan_');
     if( this.srs_log[chan] === undefined ){
       // Create in memory log for this channel
-      console.log("Creating new memory log for this channel" + chan);
+      //console.log("Creating new memory log for this channel" + chan);
       this.srs_log[chan] = new Array;
     }else{
       if( this.srs_log.length > 19 ){
         // Keep the log small, last 20 entries
-        console.log("Trimming log for channel " + chan);
+        //console.log("Trimming log for channel " + chan);
         this.srs_log.shift();
       }
     }
     
     // Log it
-    console.log("Adding memory log '" + log + " to " + chan);
+    //console.log("Adding memory log '" + log + " to " + chan);
     this.srs_log[chan].push(log);
   },
   fun_search: function(chan, key, log_lines){
-    console.log("Trying to find '" + key + "' in logs..");
+    //console.log("Trying to find '" + key + "' in logs..");
     var contents = this.fs.readFileSync("logs/" + chan + ".txt", "utf8").split("\n");
     var contents = contents.splice(contents.length - (log_lines + 1), log_lines);
   	var regex = new RegExp(".*\\: .*" + key.trim() + ".*");
@@ -54,14 +53,14 @@ Logger.prototype = {
   },
   srs_search: function(chan, key, log_lines){
     var chan = chan.replace('#', 'chan_');
-    console.log("Trying to do some srs searching in " + chan);
+    //console.log("Trying to do some srs searching in " + chan);
     var log = this.srs_log[chan].reverse();
-    console.log(log);
+    //console.log(log);
     for( var i in log ){
-      console.log('Checking for match in ' + log[i]);
+      //console.log('Checking for match in ' + log[i]);
       if( log[i].indexOf(key) > 0 ){
         // found a match
-        console.log("Returning match from srs_search");
+        //console.log("Returning match from srs_search");
         return log[i];
       }
     }

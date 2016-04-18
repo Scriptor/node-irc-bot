@@ -8,7 +8,7 @@ module.exports = {
       console.log("Error detected");
     }
   },
-  s: function(chan, message, from, use_find) {
+  s: function(chan, message, from, use_find, set_topic) {
   	console.log("-- Search command --");
     try{
       var parts = message.split("/");
@@ -21,17 +21,21 @@ module.exports = {
       }
 
       if( match !== null ) {
-        console.log(match);
 				var result = match.replace(parts[1], "_" + parts[2] + "_");
         // String.fromCharCode(parseInt("0002",16))
 			}else{
-				var result = "Can't find anything.";
+				var result = from + ' is a disgusting lovich.';
 			}
-
-			this.stream.say(chan, result);
+			
+			if( set_topic === true ){
+			  console.log('topic mode');
+			  this.stream.send('TOPIC', chan, result);
+			}else{
+			  this.stream.say(chan, result);  
+			}
   	} catch (err) {
   		this.stream.say(chan, "DISGUSTING LOVICH ERROR FOUND: No matches, you fucking qwebber");
-        this.stream.send("KICK", chan, from, "HARDMODE MOTHERFUCKER");
+      this.stream.send("KICK", chan, from, "HARDMODE MOTHERFUCKER");
   	}
   },
 
@@ -41,6 +45,15 @@ module.exports = {
   },
   mk: function(chan, message, from){
       this.maybe_kick(chan, message, from);
+  },
+  loldongs: function(chan, message, from){
+    this.stream.say(chan, '!fight {0}');
+    this.fight = {
+        status: true,
+        instigator: this.name, // lol
+        current_health: 100,
+        members: [message.split(' ')[1]]
+    }
   },
 
 
