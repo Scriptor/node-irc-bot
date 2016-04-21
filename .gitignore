@@ -2,6 +2,7 @@
 logs
 *.log
 *.txt
+output
 
 # Actual config file
 config.js
@@ -32,3 +33,4 @@ node_modules
 
 # Mongo
 data/*
+logs/*.txt
