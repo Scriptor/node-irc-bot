@@ -26,21 +26,21 @@ module.exports = {
 			}else{
 				var result = from + ' is a disgusting lovich.';
 			}
-			
+
 			if( set_topic === true ){
 			  console.log('topic mode');
 			  this.stream.send('TOPIC', chan, result);
 			}else{
-			  this.stream.say(chan, result);  
+			  this.stream.say(chan, result);
 			}
   	} catch (err) {
   		this.stream.say(chan, "DISGUSTING LOVICH ERROR FOUND: No matches, you fucking qwebber");
-      
+
       if( set_topic === true ){
         // super egregious bro
-        var msg = 'AKICK ' + chan + ' ADD ' + from + ' -T 20 Twenty min timeout';
+        var msg = 'AKICK ' + chan + ' ADD ' + from + ' !T 20';
         console.log(msg);
-        this.stream.send('MSG', 'CHANSERV',  msg);
+        this.stream.say('CHANSERV',  msg);
       }else{
         this.stream.send("KICK", chan, from, "HARDMODE MOTHERFUCKER");
       }
