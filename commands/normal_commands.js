@@ -131,12 +131,6 @@ module.exports = {
         this.stream.send('KICK', chan, from, 'donger stole all my chopsticks');
     }
   },
-  fight: function(chan, message, from) {
-       this.stream.send("KICK", chan, from, "suck my dong");
-  },
-  deathmatch: function(chan, message, from) {
-       this.stream.send("KICK", chan, from, "suck my dong");
-  },
   ascii: function(chan, message, from){
       if( this.figlet !== undefined ){
           console.log('figlet exists!');
