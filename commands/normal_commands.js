@@ -21,8 +21,7 @@ module.exports = {
       }
 
       if( match !== null ) {
-				var result = match.replace(parts[1], "_" + parts[2] + "_");
-        // String.fromCharCode(parseInt("0002",16))
+				var result = match.replace(parts[1], this.colors.bold(parts[2]));
 			}else{
 				var result = from + ' is a disgusting lovich.';
 			}
