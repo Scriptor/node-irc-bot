@@ -8,8 +8,8 @@ var SuperCommands  = require('./commands/super_commands.js');
 var AliasCommands  = require('./commands/alias_commands.js');
 var NormalCommands = require('./commands/normal_commands.js');
 var AliasModule    = require('./commands/alias.js');
-var sqlite3 = require('sqlite3').verbose();
-var figlet = require('figlet');
+var sqlite3        = require('sqlite3').verbose();
+var Colors      = require('irc-colors');
 var options = {
   channels: config.channels,
   autoRejoin: true
@@ -20,7 +20,7 @@ console.log(' -- Connecting to IRC --');
 var client = new irc.Client(config.server, config.botName, options);
 
 console.log(' -- Creating Bot Instance --');
-var bot = new Bot(config.botName, config.botPass, config.alias_token, client, db);
+var bot = new Bot(config.botName, config.botPass, config.alias_token, client, db, Colors);
 
 // Populate our bot with da knowledge
 bot.load_command_block('super', SuperCommands);

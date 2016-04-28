@@ -5,7 +5,7 @@ require('./db.js');
 
 
 
-var Bot = function(name, password, token, stream, db) {
+var Bot = function(name, password, token, stream, db, colors) {
   this.name     = name;
   this.token    = token;
   this.stream   = stream;
@@ -17,6 +17,7 @@ var Bot = function(name, password, token, stream, db) {
   var sqlite3 = require('sqlite3').verbose();
   var db = new sqlite3.Database('angrywombot.db');
   this.db = db;
+  this.colors = colors;
 
 };
 
