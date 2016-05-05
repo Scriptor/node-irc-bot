@@ -1,6 +1,8 @@
 var IgnoredUsers = require('./ignored_users.js');
-var SuperUsers = require('./super_users.js');
-var Logger         = require('./logger.js');
+var SuperUsers   = require('./super_users.js');
+var Logger       = require('./logger.js');
+var williamTell  = require('./commands/william_tell.js');
+var seent  = require('./commands/seent.js');
 require('./db.js');
 
 
@@ -18,6 +20,8 @@ var Bot = function(name, password, token, stream, db, colors) {
   var db = new sqlite3.Database('angrywombot.db');
   this.db = db;
   this.colors = colors;
+  this.williamTell = new williamTell();
+  this.seent = new seent();
 
 };
 
@@ -33,6 +37,10 @@ Bot.prototype = {
   consumeCommand: function(from, to, message) {
     // If you're ignored you can't do anything
     try{
+      
+      this.williamTell.findTell(to, from, this);
+      this.seent.saw(to, from);
+      
       if(!IgnoredUsers.includes(from)) {
 
       var parts =  this._parse_command(message);

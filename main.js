@@ -60,15 +60,18 @@ client.addListener('invite', function(chan){
 
 client.addListener('kick', function(chan, nick){
   bot.stream.say(chan, 'haha that fgt ' + nick + ' got kicked');
+  bot.seent.saw(chan, nick);
 });
 
 client.addListener('part', function(chan, nick){
   console.log('user part');
   //bot.stream.say(chan, 'so long ' + nick + ' you insatiable fgt');
+  bot.seent.saw(chan, nick);
 });
 
 client.addListener('join', function(chan, nick){
   if( bot.name != nick ){
+    bot.seent.saw(chan, nick);
     bot.stream.whois(nick, function(data){
       try{
         if( data.account !== undefined && data.accountinfo !== undefined ){
@@ -85,24 +88,10 @@ client.addListener('join', function(chan, nick){
 });
 
 client.addListener('names', function(chan, names){
-    console.log('names!');
-    console.log(names);
-    if( bot.timeout_active !== false ){
-      var target_chan = bot.timeout_active;
-      bot.timeout_active = false;
-      console.log('Processing names..');
-      // names data struct is { nick: '', nick_2: ''}
-      // (dont ask me)
-      for( var nick in names ){
-        console.log("Might kick " + nick);
-        var target_straw = Math.round(Math.random() * 5);
-        console.log(target_straw);
-        if( target_straw == 1 ){
-          // sucks to be you
-          console.log("sucks to be " + nick);
-          bot.stream.send('KICK', target_chan, nick, 'savage!');
-        }
-      }
+    // names data struct is { nick: '', nick_2: ''}
+    // (dont ask me)
+    for( var nick in names ){
+      bot.seent.saw(chan, nick);
     }
 });
 
