@@ -10,18 +10,27 @@ module.exports = {
     delete require.cache[require.resolve('./super_commands.js')];
     delete require.cache[require.resolve('./normal_commands.js')];
     delete require.cache[require.resolve('./alias.js')];
+    delete require.cache[require.resolve('./../logger.js')];
+    delete require.cache[require.resolve('./william_tell.js')];
+    delete require.cache[require.resolve('./seent.js')];
 
     // Reload the commands
     var AliasCommands  = require('./alias_commands.js');
     var SuperCommands  = require('./super_commands.js');
     var NormalCommands = require('./normal_commands.js');
-    var AliasModule     = require('./alias.js');
-    var Logger     = require('./../logger.js');
+    var williamTell    = require('./william_tell.js');
+    var seent    = require('./seent.js');
+    var AliasModule    = require('./alias.js');
+    var Logger         = require('./../logger.js');
+    
     this.load_command_block('super', SuperCommands, true);
     this.load_command_block('normal', NormalCommands, true);
     this.load_command_block('normal', AliasCommands, true);
     this.load_command_block('normal', AliasModule, true);
-    this.logger   = new Logger({log_file:"lols.txt"}, this.stream);
+    
+    this.logger      = new Logger({log_file:"lols.txt"}, this.stream);
+    this.williamTell = new williamTell();
+    this.seent = new seent();
     
     this.stream.say(chan, 'k.');
   },
@@ -82,7 +91,7 @@ module.exports = {
   },
   leave: function(chan, message, from){
     console.log('LEAVING CHANNEL ' + chan);
-    this.stream.say(chan, 'ok fuck you guys then, bunch of lovichs anyway');
+    this.stream.say(chan, 'ok fuck you guys then, bunch of timeshifters anyway');
     this.stream.send('PART', chan);
   }
 

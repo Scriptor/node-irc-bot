@@ -151,7 +151,7 @@ module.exports = {
   invite: function(chan, message, from) {
     var invitees = message.split(" ");
     console.log(from);
-    for( i = 1; i < invitees.length; i++ ){
+    for( var i = 1; i < invitees.length; i++ ){
         if( invitees[i].toLowerCase() == 'timeshifter' || invitees[i].toLowerCase() == 'lovich'){
           this.stream.say(chan, "sorry i dont invite laxatives");
           continue;
@@ -169,14 +169,42 @@ module.exports = {
   },
   rekt: function(chan, message, from) {
     this.stream.send("KICK", chan, from, "rek this fgt");
+  },
+  tell: function(chan, message, from){
+    console.log('normal tell');
+    var parts = message.trim().split(' ');
+    var to = parts[0];
+    delete parts[0];
+    parts = parts.join(' ');
+    var status = this.williamTell.recordTell(chan, to, parts, from, this.colors);
+    if( status ){
+      this.stream.say(chan, from + ': k.');
+    }else{
+      this.stream.say(chan, from + ': can`t help you cheech');
+    }
+  },
+  seen: function(chan, message, from){
+    var targets = message.trim().split(' ');
+    console.log(targets);
+    for( var i in targets ){
+      var result = this.seent.haveSeen(chan, targets[i]);
+      if( result ){
+        var msg = [this.colors.bold(targets[i]), 'was last seen', result].join(' ');
+      }else{
+        var msg = [this.colors.bold(targets[i]), '-- now thats a name that ive not heard in a long time.'].join(' ');
+      }
+      this.stream.say(chan, msg);
+    }
+  },
+  help: function(chan, message, from){
+    this.stream.say(chan, 'you need mental help');
+  },
+  pride: function(chan, message, from){
+    this.stream.say(chan, this.colors.rainbow(message.trim()));
   }
 
 };
 
 RegExp.escape= function(s) {
     return s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
-}
-
-function onlyUnique(value, index, self) {
-    return self.indexOf(value) === index;
-}
+};
