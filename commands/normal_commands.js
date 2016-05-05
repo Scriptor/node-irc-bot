@@ -149,6 +149,7 @@ module.exports = {
     this.stream.say("chanserv", "clear " + chan + " bans");
   },
   invite: function(chan, message, from) {
+    var sleep = require('sleep');
     var invitees = message.trim().split(" ");
     console.log(invitees);
     for( var i in invitees ){
@@ -159,16 +160,17 @@ module.exports = {
         this.stream.send('KICK', chan, from, 'lol u dum');
         continue;
       }
-      
+
       if( invitees[i].toLowerCase() == from.trim() ){
         this.stream.say(from + ": are you retarded?");
         continue;
       }
-      
+
       console.log("Inviting user " + invitees[i]);
       this.stream.send("INVITE", invitees[i], chan);
       this.stream.say(chan, 'k.');
       this.invites.recordInvite(chan, invitees[i]);
+      sleep.sleep(1);
     }
   },
   rekt: function(chan, message, from) {
