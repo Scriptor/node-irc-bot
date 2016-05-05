@@ -13,13 +13,15 @@ module.exports = {
     delete require.cache[require.resolve('./../logger.js')];
     delete require.cache[require.resolve('./william_tell.js')];
     delete require.cache[require.resolve('./seent.js')];
+    delete require.cache[require.resolve('./invites.js')];
 
     // Reload the commands
     var AliasCommands  = require('./alias_commands.js');
     var SuperCommands  = require('./super_commands.js');
     var NormalCommands = require('./normal_commands.js');
     var williamTell    = require('./william_tell.js');
-    var seent    = require('./seent.js');
+    var seent          = require('./seent.js');
+    var invites        = require('./invites.js');
     var AliasModule    = require('./alias.js');
     var Logger         = require('./../logger.js');
     
@@ -31,6 +33,7 @@ module.exports = {
     this.logger      = new Logger({log_file:"lols.txt"}, this.stream);
     this.williamTell = new williamTell();
     this.seent = new seent();
+    this.invites = new invites();
     
     this.stream.say(chan, 'k.');
   },

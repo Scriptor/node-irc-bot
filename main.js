@@ -34,6 +34,32 @@ client.addListener('registered', bot.authenticate.bind(bot));
 client.addListener('message', bot.consumeCommand.bind(bot));
 client.addListener('error', function(message) {
     console.log('DISGUSTING CHANSERV ERROR: ', message);
+    try{
+      console.log(message.command);
+      switch( message.command ){
+        case 'err_nosuchnick':
+          var result = bot.invites.findInvited(message.args[1]);
+          var now = new Date();
+          if( result ){
+            console.log('trying to notify via log');
+            console.log(result);
+            console.log(now.getTime());
+            var timediff = now.getTime() - result[1].getTime();
+            console.log(now.getTime, result[1].getTime(), timediff);
+            if( timediff <= 600 ){
+              console.log('User invited less than 5 mins ago');
+              bot.stream.say( result[0], message.args[1] + ' isnt online.');
+            }
+          }  
+          break;
+        case 'err_useronchannel':
+          bot.stream.say(message.args[2], message.args[1] + ' is already in here retard');
+          break;
+      }
+    }catch(e){
+      console.log('invite handler error');
+      console.log(e);
+    }
 });
 client.addListener('part', function(message){
     console.log(message);
