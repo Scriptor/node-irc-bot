@@ -151,7 +151,7 @@ module.exports = {
   invite: function(chan, message, from) {
     var invitees = message.split(" ");
     console.log(from);
-    for( i = 1; i < invitees.length; i++ ){
+    for( var i = 1; i < invitees.length; i++ ){
         if( invitees[i].toLowerCase() == 'timeshifter' || invitees[i].toLowerCase() == 'lovich'){
           this.stream.say(chan, "sorry i dont invite laxatives");
           continue;
@@ -207,8 +207,4 @@ module.exports = {
 
 RegExp.escape= function(s) {
     return s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
-}
-
-function onlyUnique(value, index, self) {
-    return self.indexOf(value) === index;
-}
+};

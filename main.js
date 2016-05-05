@@ -10,6 +10,7 @@ var NormalCommands = require('./commands/normal_commands.js');
 var AliasModule    = require('./commands/alias.js');
 var sqlite3        = require('sqlite3').verbose();
 var Colors      = require('irc-colors');
+
 var options = {
   channels: config.channels,
   autoRejoin: true
