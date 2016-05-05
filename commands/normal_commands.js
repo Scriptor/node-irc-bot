@@ -149,22 +149,26 @@ module.exports = {
     this.stream.say("chanserv", "clear " + chan + " bans");
   },
   invite: function(chan, message, from) {
-    var invitees = message.split(" ");
-    console.log(from);
-    for( var i = 1; i < invitees.length; i++ ){
-        if( invitees[i].toLowerCase() == 'timeshifter' || invitees[i].toLowerCase() == 'lovich'){
-          this.stream.say(chan, "sorry i dont invite laxatives");
-          continue;
-        }else if(invitees[i].toLowerCase() == 'laxatives' ){
-             this.stream.send('KICK', chan, from, 'lol u dum');
-             continue;
-        }
-      if( invitees[i].toLowerCase() == from.trim() ){
-           this.stream.say(from + ": are you retarded?");
-           continue;
+    var invitees = message.trim().split(" ");
+    console.log(invitees);
+    for( var i in invitees ){
+      if( invitees[i].toLowerCase() in this.ignoredUsers ){
+        this.stream.say(chan, "sorry i dont invite laxatives");
+        continue;
+      }else if(invitees[i].toLowerCase() == 'laxatives' ){
+        this.stream.send('KICK', chan, from, 'lol u dum');
+        continue;
       }
+      
+      if( invitees[i].toLowerCase() == from.trim() ){
+        this.stream.say(from + ": are you retarded?");
+        continue;
+      }
+      
       console.log("Inviting user " + invitees[i]);
       this.stream.send("INVITE", invitees[i], chan);
+      this.stream.say(chan, 'k.');
+      this.invites.recordInvite(chan, invitees[i]);
     }
   },
   rekt: function(chan, message, from) {

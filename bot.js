@@ -2,27 +2,29 @@ var IgnoredUsers = require('./ignored_users.js');
 var SuperUsers   = require('./super_users.js');
 var Logger       = require('./logger.js');
 var williamTell  = require('./commands/william_tell.js');
+var invites  = require('./commands/invites.js');
 var seent  = require('./commands/seent.js');
 require('./db.js');
 
 
 
 var Bot = function(name, password, token, stream, db, colors) {
-  this.name     = name;
-  this.token    = token;
-  this.stream   = stream;
-  this.password = password;
-  this.commands = {};
+  this.name          = name;
+  this.token         = token;
+  this.stream        = stream;
+  this.password      = password;
+  this.commands      = {};
   this.previous_nick = '';
-  this.logger   = new Logger({log_file:"lols.txt"}, this.stream);
-  this.figlet = null;
-  var sqlite3 = require('sqlite3').verbose();
-  var db = new sqlite3.Database('angrywombot.db');
-  this.db = db;
-  this.colors = colors;
-  this.williamTell = new williamTell();
-  this.seent = new seent();
-
+  this.logger        = new Logger({log_file:"lols.txt"}, this.stream);
+  this.figlet        = null;
+  var sqlite3        = require('sqlite3').verbose();
+  var db             = new sqlite3.Database('angrywombot.db');
+  this.db            = db;
+  this.colors        = colors;
+  this.williamTell   = new williamTell();
+  this.seent         = new seent();
+  this.ignoredUsers  = IgnoredUsers;
+  this.invites       = new invites();
 };
 
 // temp
@@ -47,7 +49,6 @@ Bot.prototype = {
 
       // Do we have our command token?
       if(message.indexOf(this.token) === 0) {
-        console.log(this.commands);
 
         // Check if the command is in our commands object
         if(typeof this.commands[parts.name] === 'object') {
