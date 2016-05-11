@@ -96,6 +96,13 @@ module.exports = {
     console.log('LEAVING CHANNEL ' + chan);
     this.stream.say(chan, 'ok fuck you guys then, bunch of timeshifters anyway');
     this.stream.send('PART', chan);
+  },
+  join: function(chan, message, from){
+    var chans = message.trim().split(' ');
+    for( i in chans ){
+        this.stream.say(chan, 'MY PEOPLE NEED ME IN ' + chans[i]);
+        this.stream.send('JOIN', chans[i]);
+    }
   }
 
 };
