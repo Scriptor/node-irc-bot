@@ -23,10 +23,7 @@ seent.prototype = {
             }
             
             var now = new Date();
-            var date = [now.getFullYear(), now.getMonth(), now.getDate()].join('-');
-            var time = [now.getHours(), now.getMinutes(), now.getSeconds()].join(':');
-            
-            this.members[chan][nick] = date + '@' + time + ' UTC';
+            this.members[chan][nick] = now.toDateString() + ' ' + now.toTimeString();
             console.log(['saw', nick, 'in', chan].join(' '));
         }catch(e){
             console.log('saw error');
