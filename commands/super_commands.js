@@ -103,6 +103,10 @@ module.exports = {
         this.stream.say(chan, 'MY PEOPLE NEED ME IN ' + chans[i]);
         this.stream.send('JOIN', chans[i]);
     }
+  },
+  token: function(chan, message, from){
+    this.token = message.trim().split(' ')[0];
+    this.stream.say(chan, 'k. i\'ll use the token ' + this.colors.bold(this.token) + ' for the remainder of my uptime.');
   }
 
 };
