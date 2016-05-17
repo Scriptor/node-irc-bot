@@ -18,15 +18,12 @@ williamTell.prototype = {
             }
             
             var now = new Date();
-            var date = [now.getFullYear(), now.getMonth(), now.getDate()].join('-');
-            var time = [now.getHours(), now.getMinutes(), now.getSeconds()].join(':');
             var formattedMsg = [
                 colors.bold(msg.trim()), 
                 '(', 
                 from,
-                date, 
-                '@', 
-                time, 
+                now.toDateString(),
+                now.toTimeString(),
                 ')'
             ].join(' ');
             this.messages[chan][to].push(formattedMsg);
