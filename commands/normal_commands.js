@@ -38,7 +38,6 @@ module.exports = {
       if( set_topic === true ){
         // super egregious bro
         var msg = 'AKICK ' + chan + ' ADD ' + from + ' !T 20';
-        console.log(msg);
         this.stream.say('CHANSERV',  msg);
       }else{
         this.stream.send("KICK", chan, from, "HARDMODE MOTHERFUCKER");
@@ -77,7 +76,10 @@ module.exports = {
     var now = new Date();
     if( this.stream.last_kicker !== undefined ){
         if( this.stream.last_kicker == from  ){
-            this.stream.send("KICK", chan, from, "omg stahp");
+            this.stream.last_kicker = null;
+            this.stream.say(chan, from + ': omg stahp (for 2mins)');
+            var msg = 'AKICK ' + chan + ' ADD ' + from + ' !T 2';
+            this.stream.say('CHANSERV',  msg);
             return;
         }
     }
@@ -127,7 +129,9 @@ module.exports = {
     if( bad_day == 3 ){
         this.stream.send('MODE', chan, '+o', from);
     }else{
-        this.stream.send('KICK', chan, from, 'donger stole all my chopsticks');
+        this.stream.say(chan, from + ': omg stahp (for 2mins)');
+        var msg = 'AKICK ' + chan + ' ADD ' + from + ' !T 2';
+        this.stream.say('CHANSERV',  msg);
     }
   },
   ascii: function(chan, message, from){
