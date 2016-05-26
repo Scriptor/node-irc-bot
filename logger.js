@@ -25,13 +25,13 @@ Logger.prototype = {
     var chan = chan.replace('#', 'chan_');
     if( this.srs_log[chan] === undefined ){
       // Create in memory log for this channel
-      //console.log("Creating new memory log for this channel" + chan);
+      //console.log("Creating new memory log for this channel " + chan);
       this.srs_log[chan] = new Array;
     }else{
-      if( this.srs_log.length > 19 ){
+      if( this.srs_log[chan].length > 19 ){
         // Keep the log small, last 20 entries
         //console.log("Trimming log for channel " + chan);
-        this.srs_log.shift();
+        this.srs_log[chan].shift();
       }
     }
     
@@ -52,9 +52,9 @@ Logger.prototype = {
     }
   },
   srs_search: function(chan, key, log_lines){
-    var chan = chan.replace('#', 'chan_');
+    chan = chan.replace('#', 'chan_');
     //console.log("Trying to do some srs searching in " + chan);
-    var log = this.srs_log[chan].reverse();
+    var log = this.srs_log[chan].slice().reverse();
     //console.log(log);
     for( var i in log ){
       //console.log('Checking for match in ' + log[i]);
