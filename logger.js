@@ -52,9 +52,9 @@ Logger.prototype = {
     }
   },
   srs_search: function(chan, key, log_lines){
-    var chan = chan.replace('#', 'chan_');
+    chan = chan.replace('#', 'chan_');
     //console.log("Trying to do some srs searching in " + chan);
-    var log = this.srs_log[chan].reverse();
+    var log = this.srs_log[chan].slice().reverse();
     //console.log(log);
     for( var i in log ){
       //console.log('Checking for match in ' + log[i]);
