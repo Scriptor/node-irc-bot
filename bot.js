@@ -39,7 +39,12 @@ Bot.prototype = {
   consumeCommand: function(from, to, message) {
     // If you're ignored you can't do anything
     try{
-      
+
+    if( message.indexOf(this.name + ': token?') === 0 ){
+      this.stream.say(to, from + ': my current command token is ' + this.colors.bold(this.token) );
+      return;
+     }
+
       this.williamTell.findTell(to, from, this);
       this.seent.saw(to, from);
       
