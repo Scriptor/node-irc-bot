@@ -25,13 +25,13 @@ Logger.prototype = {
     var chan = chan.replace('#', 'chan_');
     if( this.srs_log[chan] === undefined ){
       // Create in memory log for this channel
-      //console.log("Creating new memory log for this channel" + chan);
+      //console.log("Creating new memory log for this channel " + chan);
       this.srs_log[chan] = new Array;
     }else{
-      if( this.srs_log.length > 19 ){
+      if( this.srs_log[chan].length > 19 ){
         // Keep the log small, last 20 entries
         //console.log("Trimming log for channel " + chan);
-        this.srs_log.shift();
+        this.srs_log[chan].shift();
       }
     }
     
