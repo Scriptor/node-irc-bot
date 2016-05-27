@@ -10,20 +10,40 @@ module.exports = {
   },
   s: function(chan, message, from, use_find, set_topic) {
   	console.log("-- Search command --");
+    console.log(message);
+    var initial_index = message;
     try{
-      var parts = message.split("/");
+      if( message.indexOf(' && ') > -1 ){
+        console.log('defining subparts');
+        var subparts = message.split(' && ') ;
+        message = message.split(' ').splice(' &&');
+        initial_index = message[0];
+      }
+
+      var parts = initial_index.split("/");
+      console.log(parts);
       if( use_find === false ){
-          console.log("Fun mode");
-          var match = this.logger.fun_search(chan, parts[1], 5000);
+        console.log("Fun mode");
+        var match = this.logger.fun_search(chan, parts[1], 5000);
       }else{
         console.log("Srs mode");
         var match = this.logger.srs_search(chan, parts[1], 10);
       }
 
       if( match !== null ) {
-				var result = match.replace(parts[1], this.colors.bold(parts[2]));
-			}else{
-				var result = from + ' is a disgusting lovich.';
+        if( subparts !== undefined ){
+          console.log('chained s// event!');
+          delete subparts[0];
+          var result = match.replace(parts[1], this.colors.bold(parts[2]));
+          for(var i in subparts){
+            var replace_parts = subparts[i].split('/');
+            result = result.replace(replace_parts[1], this.colors.bold(replace_parts[2]));
+          }
+        }else{
+          console.log('single s// event!');
+          console.log(match);
+  				var result = match.replace(parts[1], this.colors.bold(parts[2]));
+        }
 			}
 
 			if( set_topic === true ){
