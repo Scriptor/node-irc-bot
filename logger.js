@@ -9,8 +9,8 @@ var Logger = function(config, stream){
 
 Logger.prototype = {
   write: function(from, to, message){
-    console.log('write logs');
-    var filename = "logs/" + to + ".txt",
+    //console.log('write logs');
+    var filename = "logs/" + to.replace(/\//g, '_') + ".txt",
       timestamp = new Date(),
       log = "<" + from + ">" + ": " + message + "\n";
       
@@ -21,8 +21,8 @@ Logger.prototype = {
       this.srsly_log(to, log);
   },
   srsly_log: function(chan, log){
-    //console.log('srs logging');
-    var chan = chan.replace('#', 'chan_');
+    console.log('srs logging');
+    var chan = chan.replace('#', 'chan_').replace(/\//g, '_');
     if( this.srs_log[chan] === undefined ){
       // Create in memory log for this channel
       //console.log("Creating new memory log for this channel " + chan);
@@ -41,7 +41,7 @@ Logger.prototype = {
   },
   fun_search: function(chan, key, log_lines){
     //console.log("Trying to find '" + key + "' in logs..");
-    var contents = this.fs.readFileSync("logs/" + chan + ".txt", "utf8").split("\n");
+    var contents = this.fs.readFileSync("logs/" + chan.replace(/\//g, '_') + ".txt", "utf8").split("\n");
     var contents = contents.splice(contents.length - (log_lines + 1), log_lines);
   	var regex = new RegExp(".*\\: .*" + key.trim() + ".*");
     for( var i = 0; i < log_lines; i++ ){
@@ -52,8 +52,8 @@ Logger.prototype = {
     }
   },
   srs_search: function(chan, key, log_lines){
-    chan = chan.replace('#', 'chan_');
-    //console.log("Trying to do some srs searching in " + chan);
+    chan = chan.replace('#', 'chan_').replace(/\//g, '_');
+    console.log("Trying to do some srs searching in " + chan);
     var log = this.srs_log[chan].slice().reverse();
     //console.log(log);
     for( var i in log ){
