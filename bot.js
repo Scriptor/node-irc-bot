@@ -87,6 +87,8 @@ Bot.prototype = {
             this.commands.s.func.apply(this, [to, message, from, true, false]);
           }else if(message.indexOf('t/') == 0){
             this.commands.s.func.apply(this, [to, message, from, true, true]);
+          }else if(message.indexOf('c/') == 0){
+            this.commands.c.func.apply(this, [to, message, from, false, false]);
           }else if(message.indexOf("http") == 0){
             //this.http_sniffer.sniff(to, message, from);
           }else{

@@ -8,6 +8,56 @@ module.exports = {
       console.log("Error detected");
     }
   },
+  c: function(chan, message, from, use_find, set_topic){
+    console.log("-- CHAINED Search command --");
+    console.log(message);
+    try{
+      var parts = message.split('/');
+      console.log(parts);
+      console.log(parts.length);
+      
+      // First, find an initial match
+      use_find = true;
+      if( use_find === false ){
+        console.log("Fun mode");
+        var match = this.logger.fun_search(chan, parts[1], 5000);
+      }else{
+        console.log("Srs mode");
+        var match = this.logger.srs_search(chan, parts[1], 10);
+      }
+      
+      console.log(match);
+      
+      // Now replace the chained searches
+      if( match !== null ){
+        console.log('Chained match found!');
+        for( var i = 1; i < ( parts.length - 1); i += 2){
+          var search = parts[i];
+          var replace = parts[ i + 1];
+          match = match.replace(search, this.colors.bold(replace));
+        }
+      }
+      
+      if( set_topic === true ){
+			  console.log('topic mode');
+			  this.stream.send('TOPIC', chan, match);
+			}else{
+			  this.stream.say(chan, match);
+			}
+  	} catch (err) {
+  	  console.log(err);
+  	  console.log(err.stack);
+  		this.stream.say(chan, "DISGUSTING LOVICH ERROR FOUND: No matches, you fucking qwebber");
+
+      if( set_topic === true ){
+        // super egregious bro
+        var msg = 'AKICK ' + chan + ' ADD ' + from + ' !T 20 timeout';
+        this.stream.say('CHANSERV',  msg);
+      }else{
+        this.stream.send("KICK", chan, from, "HARDMODE MOTHERFUCKER");
+      }
+  	}
+  },
   s: function(chan, message, from, use_find, set_topic) {
   	console.log("-- Search command --");
     console.log(message);
