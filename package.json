@@ -19,5 +19,9 @@
   "homepage": "https://bitbucket.org/omgramrod/angrywombot#readme",
   "dependencies": {
     "irc": "^0.3.12"
+  },
+  "devDependencies": {
+    "orm": "^3.1.0",
+    "sqlite3": "^3.1.4"
   }
 }
