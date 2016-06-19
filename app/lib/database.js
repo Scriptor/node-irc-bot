@@ -21,8 +21,13 @@ Database.prototype = {
   },
 
   setup(db) {
-    this.ChatUser = require('../models/chat-user.js')(db);
-    this.Message = require('../models/message.js')(db);
+    models = ['chat-user', 'message'];
+
+    this.models = {};
+
+    models.forEach((model_name) => {
+      this.models['chat-user'] = require('../models/chat-user.js')(db, this.models);
+    });
   },
 
   findOrCreateBy: function(model, obj, cb) {
