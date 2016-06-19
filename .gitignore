@@ -3,6 +3,7 @@ logs
 *.log
 *.txt
 output
+bot.db
 
 # Actual config file
 config.js

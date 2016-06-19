@@ -1,4 +1,4 @@
-module.exports = function(db, ChatUser) {
+module.exports = function(db, models) {
   return db.define("message", {
     content      : String,
     created_at   : Date,
@@ -10,5 +10,5 @@ module.exports = function(db, ChatUser) {
     validations: {
       //age: orm.enforce.ranges.number(18, undefined, "under-age")
     }
-  }).hasOne('chat_user', ChatUser, {reverse: 'messages'});
+  }).hasOne('chat_user', models['chat-user'], {reverse: 'messages'});
 };

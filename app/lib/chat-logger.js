@@ -4,7 +4,8 @@ var ChatLogger = function(db) {
 
 ChatLogger.prototype = {
   log: function(nick, message) {
-    this.db.findOrCreateBy(this.db.ChatUser, {nick: nick}, function(user) {
+    this.db.findOrCreateBy('chat-user', {nick: nick}, function(user) {
+      console.log(user.nick);
       user.getMessages(function(err, results) {
         if(err) throw err;
         console.log('Messages');

@@ -26,11 +26,13 @@ Database.prototype = {
     this.models = {};
 
     models.forEach((model_name) => {
-      this.models['chat-user'] = require('../models/chat-user.js')(db, this.models);
+      this.models[model_name] = require('../models/' + model_name + '.js')(db, this.models);
     });
   },
 
   findOrCreateBy: function(model, obj, cb) {
+    model = this.models[model];
+
     model.find(obj, function(err, results) {
       if(err) throw err;
 
