@@ -1,16 +1,19 @@
 var orm = require("orm");
 
 var Database = function() {
-  
+  this.orm = orm;
 };
 
 Database.prototype = {
-  connect() {
+  connect(db_name) {
+    if(typeof db_name === 'undefined') throw 'No database selected';
+
     return new Promise((resolve, reject) => {
-      orm.connect('sqlite://bot.db', (err, db) => {
+      this.orm.connect('sqlite://db/' + db_name + '.db', (err, db) => {
         if(err) reject(err);
 
-        this.setup(db);
+        console.log('CALLING');
+        this.modelSetup(db);
 
         db.sync((err) => {
           if(err) reject(err);
@@ -20,8 +23,8 @@ Database.prototype = {
     });
   },
 
-  setup(db) {
-    models = ['chat-user', 'message'];
+  modelSetup(db) {
+    var models = ['chat-user', 'message'];
 
     this.models = {};
 
