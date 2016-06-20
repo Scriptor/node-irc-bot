@@ -1,7 +1,7 @@
 module.exports = function(db) {
-  return db.define("chat_user", {
+  return db.define("irc_alias", {
     nick        : String,
-    created_at  : Date,
+    created_at  : Date
   }, {
     methods: {
     },

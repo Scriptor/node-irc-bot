@@ -1,8 +1,9 @@
 module.exports = function(db, models) {
-  return db.define("message", {
+  return db.define("irc_message", {
     content      : String,
     created_at   : Date,
-    chat_user_id : Number
+    irc_alias_id : Number,
+    irc_channel_id : Number
   }, {
     methods: {
     },
@@ -10,5 +11,5 @@ module.exports = function(db, models) {
     validations: {
       //age: orm.enforce.ranges.number(18, undefined, "under-age")
     }
-  }).hasOne('chat_user', models['chat-user'], {reverse: 'messages'});
+  }).hasOne('irc_alias', models['irc-alias'], {reverse: 'irc_messages'});
 };

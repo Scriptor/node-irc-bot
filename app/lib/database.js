@@ -1,4 +1,5 @@
 var orm = require("orm");
+var fs = require('fs');
 
 var Database = function() {
   this.orm = orm;
@@ -12,7 +13,6 @@ Database.prototype = {
       this.orm.connect('sqlite://db/' + db_name + '.db', (err, db) => {
         if(err) reject(err);
 
-        console.log('CALLING');
         this.modelSetup(db);
 
         db.sync((err) => {
@@ -24,7 +24,11 @@ Database.prototype = {
   },
 
   modelSetup(db) {
-    var models = ['chat-user', 'message'];
+    var files = fs.readdirSync('./app/models');
+
+    var models = files.map(function(file) {
+      return file.split('.')[0];
+    });
 
     this.models = {};
 
@@ -33,7 +37,9 @@ Database.prototype = {
     });
   },
 
-  findOrCreateBy: function(model, obj, cb) {
+  findOrCreateBy(model, obj, cb) {
+    console.log('wat');
+
     model = this.models[model];
 
     model.find(obj, function(err, results) {

@@ -1,4 +1,3 @@
-var sinon = require('sinon').sandbox.create();
 var Database = require('../../app/lib/database.js');
 
 describe('lib/database', function() {
