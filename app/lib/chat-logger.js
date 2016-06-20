@@ -13,16 +13,24 @@ ChatLogger.prototype = {
             content: content
           };
 
+          console.log(data);
+
           this.db.models['irc-message'].create(data, resolve);
         });
       });
     });
   },
 
-  messagesFor(alias, chan, cb) {
-    this.db.models['irc-alias'].one({nick: alias}, (alias) => {
+  messagesFor(nick, chan, cb) {
+    this.db.models['irc-alias'].all(function(results) {
+      console.log(results);
+    });
+
+
+    this.db.models['irc-alias'].one({nick: nick}, (alias) => {
       this.db.models['irc-channel'].one({name: chan}, (chan) => {
         console.log(alias);
+        console.log(chan);
         if(alias) {
           var query = {irc_alias_id: alias.id};
 

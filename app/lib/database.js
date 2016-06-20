@@ -38,8 +38,6 @@ Database.prototype = {
   },
 
   findOrCreateBy(model, obj, cb) {
-    console.log('wat');
-
     model = this.models[model];
 
     model.find(obj, function(err, results) {

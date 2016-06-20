@@ -31,7 +31,7 @@ describe('lib/chat-logger', function() {
       return new Promise((resolve) => {
         chat_logger.log('criten', '#webdevvit', 'Hello').then(() => {
           chat_logger.messagesFor('criten', '#webdevvit', function(messages) {
-            expect(messages.length).to.equal(0);
+            expect(messages.length).to.equal(1);
             resolve();
           });
         });
