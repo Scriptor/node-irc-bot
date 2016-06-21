@@ -11,5 +11,6 @@ module.exports = function(db, models) {
     validations: {
       //age: orm.enforce.ranges.number(18, undefined, "under-age")
     }
-  }).hasOne('irc_alias', models['irc-alias'], {reverse: 'irc_messages'});
+  }).hasOne('irc_alias', models['irc-alias'], {reverse: 'irc_messages'})
+    .hasOne('irc_channel', models['irc-channel'], {reverse: 'irc_messages'});
 };
