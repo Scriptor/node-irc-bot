@@ -37,30 +37,6 @@ module.exports = {
 
     this.stream.say(chan, 'k.');
   },
-  invites_on: function(chan, message){
-      this.stream.send("MODE", chan, "+i");
-      this.stream.say(chan, "Invite-only mode has been turned on. Remember to /msg chanserv invite " + chan + " if you get locked out.");
-  },
-  invites_off: function(chan, message){
-      this.stream.send("MODE", chan, "-i");
-      this.stream.say(chan, "This channel is no longer in invite-only mode.");
-  },
-  timeout: function(chan, message){
-
-  },
-  savage: function(chan, message){
-      console.log("Trying to get everyone to stfu");
-      // this gets processed in the main.js event listeners
-      this.timeout_active = chan;
-      this.stream.send('NAMES', chan);
-  },
-  quiet: function(chan, message){
-    var users = message.trim().split(' ');
-    for( var i in users ){
-      this.stream.send("MODE", chan, "+q " + users[i]);
-      this.strean.say(chan, 'Tell me, Mr. ' + users[i] + '... what good is a phone call... if you\'re unable to speak?')
-    }
-  },
   mk_reset: function(chan, message){
    this.stream.kick_expiry = undefined;
    this.stream.last_kicker = 'timeshifter';
@@ -98,6 +74,7 @@ module.exports = {
     this.stream.send('PART', chan);
   },
   join: function(chan, message, from){
+    console.log('join cmd');
     var chans = message.trim().split(' ');
     for( i in chans ){
         this.stream.say(chan, 'MY PEOPLE NEED ME IN ' + chans[i]);

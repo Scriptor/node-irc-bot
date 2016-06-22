@@ -25,6 +25,7 @@ var Bot = function(name, password, token, stream, db, colors) {
   this.seent         = new seent();
   this.ignoredUsers  = IgnoredUsers;
   this.invites       = new invites();
+  this.markov        = new require('markov');
 };
 
 // temp
@@ -48,11 +49,13 @@ Bot.prototype = {
       this.williamTell.findTell(to, from, this);
       this.seent.saw(to, from);
 
-      // Log it (mainly for s/whatever/whatever operations)
-      this.logger.write(from, to, message);
-
       if( IgnoredChannels.includes(to)){
         console.log('Ignored channel ' + to);
+
+        // Log it (mainly for s/whatever/whatever operations)
+        this.logger.write(from, to, message);
+        
+        // Leave since we dont want any interaction from the bot in this channel
         return;
       }
 
@@ -99,6 +102,9 @@ Bot.prototype = {
             this.commands.c.func.apply(this, [to, message, from, false, false]);
           }else if(message.indexOf("http") == 0){
             //this.http_sniffer.sniff(to, message, from);
+          }else{
+            // Log it (mainly for s/whatever/whatever operations)
+            this.logger.write(from, to, message);
           }
         }
     }else{
