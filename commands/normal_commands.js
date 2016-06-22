@@ -2,7 +2,7 @@ var fs = require('fs');
 
 module.exports = {
   timeshifter: function(chan, message, from){
-    console.log('-- TIMESHIFTER MARKOVs --');
+    var MarkovChain = require('markovchain')
       , fs = require('fs')
       , quotes = new MarkovChain(fs.readFileSync(__dirname + '/../logs/#_r_webdev.txt', 'utf8'));
       
