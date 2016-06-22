@@ -25,7 +25,6 @@ var Bot = function(name, password, token, stream, db, colors) {
   this.seent         = new seent();
   this.ignoredUsers  = IgnoredUsers;
   this.invites       = new invites();
-  this.markov        = new require('markov');
 };
 
 // temp
