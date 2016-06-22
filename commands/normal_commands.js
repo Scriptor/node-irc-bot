@@ -5,8 +5,8 @@ module.exports = {
     var MarkovChain = require('markovchain')
       , fs = require('fs')
       , quotes = new MarkovChain(fs.readFileSync(__dirname + '/../logs/#_r_webdev.txt', 'utf8'));
-      
-      this.stream.say(chan, quotes.start('<timeshifter>:').end().process() );
+
+      this.stream.say(chan, quotes.start('<timeshifter>:').end(15).process() );
   },
   topic: function(chan, message, from){
     var new_title = message.trim() + " (" + from + ")";
@@ -24,7 +24,7 @@ module.exports = {
       var parts = message.split('/');
       console.log(parts);
       console.log(parts.length);
-      
+
       // First, find an initial match
       use_find = true;
       if( use_find === false ){
@@ -34,9 +34,9 @@ module.exports = {
         console.log("Srs mode");
         var match = this.logger.srs_search(chan, parts[1], 10);
       }
-      
+
       console.log(match);
-      
+
       // Now replace the chained searches
       if( match !== null ){
         console.log('Chained match found!');
@@ -46,7 +46,7 @@ module.exports = {
           match = match.replace(search, this.colors.bold(replace));
         }
       }
-      
+
       if( set_topic === true ){
 			  console.log('topic mode');
 			  this.stream.send('TOPIC', chan, match);
@@ -208,8 +208,8 @@ module.exports = {
     if( bad_day == 3 ){
         this.stream.send('MODE', chan, '+o', from);
     }else{
-        this.stream.say(chan, from + ': omg stahp (for 2mins)');
-        var msg = 'AKICK ' + chan + ' ADD ' + from + ' !T 2';
+        this.stream.say(chan, from + ': omg stahp (for 720 mins)');
+        var msg = 'AKICK ' + chan + ' ADD ' + from + ' !T 720';
         this.stream.say('CHANSERV',  msg);
     }
   },
@@ -251,10 +251,10 @@ module.exports = {
 
       console.log("Inviting user " + invitees[i]);
       this.stream.send("INVITE", invitees[i], chan);
-      this.stream.say(chan, 'k.');
       this.invites.recordInvite(chan, invitees[i]);
       sleep.sleep(1);
     }
+    this.stream.say(chan, 'k.');
   },
   rekt: function(chan, message, from) {
     this.stream.send("KICK", chan, from, "rek this fgt");

@@ -24,17 +24,17 @@ module.exports = {
     var invites        = require('./invites.js');
     var AliasModule    = require('./alias.js');
     var Logger         = require('./../logger.js');
-    
+
     this.load_command_block('super', SuperCommands, true);
     this.load_command_block('normal', NormalCommands, true);
     this.load_command_block('normal', AliasCommands, true);
     this.load_command_block('normal', AliasModule, true);
-    
+
     this.logger      = new Logger({log_file:"lols.txt"}, this.stream);
     this.williamTell = new williamTell();
     this.seent = new seent();
     this.invites = new invites();
-    
+
     this.stream.say(chan, 'k.');
   },
   invites_on: function(chan, message){
@@ -46,7 +46,7 @@ module.exports = {
       this.stream.say(chan, "This channel is no longer in invite-only mode.");
   },
   timeout: function(chan, message){
-    
+
   },
   savage: function(chan, message){
       console.log("Trying to get everyone to stfu");
@@ -57,7 +57,7 @@ module.exports = {
   quiet: function(chan, message){
     var users = message.trim().split(' ');
     for( var i in users ){
-      this.stream.send("MODE", chan, "+m " + users[i]);
+      this.stream.send("MODE", chan, "+q " + users[i]);
       this.strean.say(chan, 'Tell me, Mr. ' + users[i] + '... what good is a phone call... if you\'re unable to speak?')
     }
   },
@@ -89,7 +89,7 @@ module.exports = {
         } catch (err) {
           console.log(err);
         }
-      }); 
+      });
     }
   },
   leave: function(chan, message, from){

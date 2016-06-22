@@ -47,15 +47,15 @@ Bot.prototype = {
 
       this.williamTell.findTell(to, from, this);
       this.seent.saw(to, from);
-      
+
       // Log it (mainly for s/whatever/whatever operations)
       this.logger.write(from, to, message);
-      
+
       if( IgnoredChannels.includes(to)){
         console.log('Ignored channel ' + to);
         return;
       }
-      
+
       if(!IgnoredUsers.includes(from)) {
 
       var parts =  this._parse_command(message);
@@ -204,7 +204,7 @@ Bot.prototype = {
           console.log('Reloading command ' + name);
         }
       }
-      
+
       if( typeof commands[name] === 'object' ){
         // a whole module!
         // basically the alias module for now
