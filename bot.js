@@ -1,11 +1,11 @@
-var IgnoredUsers = require('./ignored_users.js');
-var SuperUsers   = require('./super_users.js');
-var Logger       = require('./logger.js');
-var williamTell  = require('./commands/william_tell.js');
-var invites  = require('./commands/invites.js');
-var seent  = require('./commands/seent.js');
+var IgnoredUsers    = require('./ignored_users.js');
+var IgnoredChannels = require('./ignored_channels.js');
+var SuperUsers      = require('./super_users.js');
+var Logger          = require('./logger.js');
+var williamTell     = require('./commands/william_tell.js');
+var invites         = require('./commands/invites.js');
+var seent           = require('./commands/seent.js');
 require('./db.js');
-
 
 
 var Bot = function(name, password, token, stream, db, colors) {
@@ -47,6 +47,14 @@ Bot.prototype = {
 
       this.williamTell.findTell(to, from, this);
       this.seent.saw(to, from);
+      
+      // Log it (mainly for s/whatever/whatever operations)
+      this.logger.write(from, to, message);
+      
+      if( IgnoredChannels.includes(to)){
+        console.log('Ignored channel ' + to);
+        return;
+      }
       
       if(!IgnoredUsers.includes(from)) {
 
@@ -91,9 +99,6 @@ Bot.prototype = {
             this.commands.c.func.apply(this, [to, message, from, false, false]);
           }else if(message.indexOf("http") == 0){
             //this.http_sniffer.sniff(to, message, from);
-          }else{
-            // Log it (mainly for s/whatever/whatever operations)
-            this.logger.write(from, to, message);
           }
         }
     }else{
