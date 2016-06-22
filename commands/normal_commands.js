@@ -1,4 +1,13 @@
+var fs = require('fs');
+
 module.exports = {
+  timeshifter: function(chan, message, from){
+    console.log('-- TIMESHIFTER MARKOVs --');
+      , fs = require('fs')
+      , quotes = new MarkovChain(fs.readFileSync(__dirname + '/../logs/#_r_webdev.txt', 'utf8'));
+      
+      this.stream.say(chan, quotes.start('<timeshifter>:').end().process() );
+  },
   topic: function(chan, message, from){
     var new_title = message.trim() + " (" + from + ")";
     console.log("Attempting to set topic to " + new_title);
