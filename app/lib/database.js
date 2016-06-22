@@ -37,8 +37,8 @@ Database.prototype = {
     });
   },
 
-  findOrCreateBy(model, obj, cb) {
-    model = this.models[model];
+  findOrCreateBy(model_name, obj, cb) {
+    model = this.models[model_name];
 
     model.find(obj, function(err, results) {
       if(err) throw err;

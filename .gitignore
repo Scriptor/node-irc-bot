@@ -1,9 +1,11 @@
 # Logs
 logs
+db
 *.log
 *.txt
 output
 bot.db
+.DS_Store
 
 # Actual config file
 config.js

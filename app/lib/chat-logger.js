@@ -14,19 +14,23 @@ ChatLogger.prototype = {
             content: content
           };
 
-          console.log(data);
-
-          this.db.models['irc-message'].create(data, resolve, function(err, results) {
-            console.log(err);
-            console.log(results.content);
+          this.db.models['irc-message'].create(data, (err, results) => {
+            if(err) reject(err);
+            else resolve(results);
           });
         });
       });
     });
   },
 
-  messagesFor(nick, chan, cb) {
-    this.db.models['irc-message'].findByIrc_alias({nick: nick}).findByIrc_channel({name: chan}, cb);
+  messagesFor(nick, chan) {
+    return new Promise((resolve, reject) => {
+      this.db.models['irc-message'].findByIrc_alias({nick: nick})
+                                   .findByIrc_channel({name: chan}, (err, results) => {
+        if(err) reject(err);
+        else resolve(results);
+      });
+    });
   },
 
   seen(nick, chan) {

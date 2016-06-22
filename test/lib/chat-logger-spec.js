@@ -6,35 +6,31 @@ describe('lib/chat-logger', function() {
   var db;
 
   before(function() {
-    return new Promise((resolve, reject) => {
-      db = new Database();
+    db = new Database();
 
-      db.connect('test-db2').then(() => {
-        resolve();
-      });
-    });
+    var token = require('crypto').randomBytes(64).toString('hex');
+
+    return db.connect(token);
   });
 
   beforeEach(function() {
     chat_logger = new ChatLogger(db);
   });
 
-  describe('log', function() {
-    it('logs a message', function() {
-      chat_logger.log('foo', 'bar', 'Hello');
+  describe('messagesFor', function() {
+    beforeEach(function() {
+      return chat_logger.log('criten', '#webdevvit', 'Hello')
+      .then(() => chat_logger.log('criten', '#webdevvit', 'whats up'))
+      .then(() => chat_logger.log('criten', '#ruby', 'wrong channel'))
+      .then(() => chat_logger.log('angrywombat', '#webdevvit', 'whats up'));
     });
 
-  });
-
-  describe('messagesFor', function() {
     it('gets the messages for a user', function() {
-      return new Promise((resolve) => {
-        chat_logger.log('criten', '#webdevvit', 'Hello').then(() => {
-          chat_logger.messagesFor('criten', '#webdevvit', function(messages) {
-            expect(messages.length).to.equal(1);
-            resolve();
-          });
-        });
+      return chat_logger.messagesFor('criten', '#webdevvit').then((messages) => {
+        messages.forEach((n) => console.log(n.irc_alias_id));
+        messages.forEach((n) => console.log(n.irc_channel_id));
+        messages.forEach((n) => console.log(n.content));
+        expect(messages.length).to.equal(2);
       });
     });
   });
