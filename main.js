@@ -10,6 +10,7 @@ var NormalCommands = require('./commands/normal_commands.js');
 var AliasModule    = require('./commands/alias.js');
 var sqlite3        = require('sqlite3').verbose();
 var Colors      = require('irc-colors');
+var fs = require('fs');
 
 var options = {
   channels: config.channels,
@@ -111,6 +112,15 @@ client.addListener('join', function(chan, nick){
         // error listener will handle
       }
     });
+  }
+  
+  if( chan == '##webdevvit' ){
+    var sound_off = Math.round(Math.random() * 10);
+    if( sound_off == 3 ){
+      var contents = fs.readFileSync("logs/timeshifter.txt", "utf8").split("\n");
+      var msg = contents[Math.floor(Math.random()*contents.length)]
+      bot.stream.say(chan, 'TIMESHIFTER BONUS -- ' + msg);
+    }
   }
 });
 
