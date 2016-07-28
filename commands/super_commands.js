@@ -44,6 +44,7 @@ module.exports = {
   rename: function(chan, message, from) {
       var new_name = message.trim().split(' ');
       console.log('Renaming to ', message.trim());
+      this.nick = new_name;
       this.stream.send('NICK', new_name[0]);
   },
   users: function(chan, message){

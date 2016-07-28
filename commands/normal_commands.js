@@ -192,6 +192,11 @@ module.exports = {
     this.stream.last_kicker = from;
     this.stream.kick_expiry = now.setHours( now.getHours() +1);
 
+    if( users.indexOf(this.name) > -1 ){
+        this.stream.send('KICK', chan, from, "Nice try faggot");
+        return;
+    }
+
     // Possibly kick the target
     if( target_straw == 1 ){
       try{
