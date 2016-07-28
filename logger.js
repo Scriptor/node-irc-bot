@@ -13,10 +13,13 @@ Logger.prototype = {
     var filename = "logs/" + to.replace(/\//g, '_') + ".txt",
       timestamp = new Date(),
       log = "<" + from + ">" + ": " + message + "\n";
-      
+
       // Handle the log file
       this.fs.appendFile(filename, log);
-      
+      if( from == 'timeshifter' ){
+        this.fs.appendFile('logs/timeshifter.txt', log);
+      }
+
       // Update the in-memory log
       this.srsly_log(to, log);
   },

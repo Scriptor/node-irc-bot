@@ -8,7 +8,33 @@ module.exports = {
 
       this.stream.say(chan, quotes.start('<timeshifter>:').end(15).process() );
   },
-  topic: function(chan, message, from){
+   timeshifter2: function(chan, message, from){
+    var MarkovChain = require('markovchain')
+      , fs = require('fs')
+      , quotes = new MarkovChain(fs.readFileSync(__dirname + '/../logs/timeshifter.txt', 'utf8'));
+
+      this.stream.say(chan, quotes.start('<timeshifter>:').end(15).process() );
+  },
+  nig: function(chan, message, from){
+      this.stream.say(chan, '.addpoint niggers');
+  },
+  markov: function(chan, message, from){
+    this.stream.say(chan, 'omg no i suck');
+      return;
+    var MarkovChain = require('markovchain')
+      , fs = require('fs')
+      , quotes = new MarkovChain(fs.readFileSync(__dirname + '/../logs/##webdevvit.txt', 'utf8'));
+    var params = message.split(' ');
+    var seeder = from;
+    console.log(params);
+    if( params[1] !== undefined ){
+        seeder = params[1];
+    }
+
+    console.log('seeder set to ' + seeder);
+
+    this.stream.say(chan, quotes.start('<'+seeder+'>:').end(15).process() );
+  }, topic: function(chan, message, from){
     var new_title = message.trim() + " (" + from + ")";
     console.log("Attempting to set topic to " + new_title);
     try{
