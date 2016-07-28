@@ -273,6 +273,9 @@ module.exports = {
       }else if(invitees[i].toLowerCase() == 'laxatives' ){
         this.stream.send('KICK', chan, from, 'lol u dum');
         continue;
+      }else if (invitees[i].toLowerCase() == 'timeshifter'){
+        this.stream.say(chan, 'timeshifter is already in here retard');
+        continue;
       }
 
       if( invitees[i].toLowerCase() == from.trim() ){
@@ -305,6 +308,7 @@ module.exports = {
   },
   seen: function(chan, message, from){
     var targets = message.trim().split(' ');
+    var sleep = require('sleep');
     console.log(targets);
     for( var i in targets ){
       var result = this.seent.haveSeen(chan, targets[i]);
