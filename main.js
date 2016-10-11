@@ -106,17 +106,17 @@ client.addListener('join', function(chan, nick){
 //          bot.stream.say(chan, 'welcome to ' + chan + ', ' + nick + ', pls dont be fggy');
         }else{
           // bot.stream.send('MODE', chan, '+m ' + nick);
-          bot.stream.say(chan, 'pls auth to nickserv, ' + nick);
+//          bot.stream.say(chan, 'pls auth to nickserv, ' + nick);
         }
       } catch (err) {
         // error listener will handle
       }
     });
   }
-  
+
   if( chan == '##webdevvit' ){
     var sound_off = Math.round(Math.random() * 10);
-    if( sound_off == 3 ){
+    if( sound_off <= 3 ){
       var contents = fs.readFileSync("logs/timeshifter.txt", "utf8").split("\n");
       var msg = contents[Math.floor(Math.random()*contents.length)]
       bot.stream.say(chan, 'TIMESHIFTER BONUS -- ' + msg);

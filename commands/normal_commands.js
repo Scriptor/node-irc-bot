@@ -82,7 +82,7 @@ module.exports = {
   	} catch (err) {
   	  console.log(err);
   	  console.log(err.stack);
-  		this.stream.say(chan, "DISGUSTING LOVICH ERROR FOUND: No matches, you fucking qwebber");
+  		this.stream.say(chan, "DISGUSTING TIMESHITTER ERROR FOUND: No matches, you fucking qwebber");
 
       if( set_topic === true ){
         // super egregious bro
@@ -138,7 +138,7 @@ module.exports = {
 			  this.stream.say(chan, result);
 			}
   	} catch (err) {
-  		this.stream.say(chan, "DISGUSTING LOVICH ERROR FOUND: No matches, you fucking qwebber");
+  		this.stream.say(chan, "DISGUSTING TIMESHIFTER ERROR FOUND: No matches, you fucking qwebber");
 
       if( set_topic === true ){
         // super egregious bro
@@ -239,8 +239,8 @@ module.exports = {
     if( bad_day == 3 ){
         this.stream.send('MODE', chan, '+o', from);
     }else{
-        this.stream.say(chan, from + ': omg stahp (for 720 mins)');
-        var msg = 'AKICK ' + chan + ' ADD ' + from + ' !T 720';
+        this.stream.say(chan, from + ': omg stahp (for 2 mins)');
+        var msg = 'AKICK ' + chan + ' ADD ' + from + ' !T 2';
         this.stream.say('CHANSERV',  msg);
     }
   },
@@ -311,6 +311,7 @@ module.exports = {
     var sleep = require('sleep');
     console.log(targets);
     for( var i in targets ){
+      sleep.sleep(1);
       var result = this.seent.haveSeen(chan, targets[i]);
       if( result ){
         var msg = [this.colors.bold(targets[i]), 'was last seen', result].join(' ');
@@ -325,8 +326,20 @@ module.exports = {
   },
   pride: function(chan, message, from){
     this.stream.say(chan, this.colors.rainbow(message.trim()));
+  },
+  exec: function(chan, message, from){
+    var sleep = require('sleep');
+    this.stream.say(chan, from + ': one moment please while I run that through kubernetes for you..');
+    sleep.sleep( 10 );
+    this.stream.send('KICK', chan, from, 'ill send you to /dev/null faggot');
+  },
+  addpoint: function(chan, message, from){
+    this.stream.say(chan, '*addpoint wambot');
+    this.stream.say(chan, from + ': suck it');
+  },
+  rmpoint: function(chan, message, from){
+    this.stream.send('KICK', chan, from, 'i have removed all your points, fgt');
   }
-
 };
 
 RegExp.escape= function(s) {
