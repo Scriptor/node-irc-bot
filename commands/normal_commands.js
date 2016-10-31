@@ -298,6 +298,9 @@ module.exports = {
   },
   help: function(chan, message, from){
     this.stream.say(chan, 'you need mental help');
+    var msg = 'AKICK ' + chan + ' ADD ' + from + ' !T 1 timeout';
+    this.stream.say('CHANSERV',  msg);
+    
   },
   pride: function(chan, message, from){
     this.stream.say(chan, this.colors.rainbow(message.trim()));
@@ -314,6 +317,57 @@ module.exports = {
   },
   rmpoint: function(chan, message, from){
     this.stream.send('KICK', chan, from, 'i have removed all your points, fgt');
+  },
+  man: function(chan, message, from){
+    console.log('hallllllpin');
+    var man_topics = {
+        timeshifter: 'A fun little markov chain from #/r/webdev logs seeded by a timeshifter log entry. Does not take arguments, cause you\'re a faggot.',
+        timeshifter2: 'A more nonsensical markov chain than !timeshifter. This one uses a timeshifter-only log.',
+        nig: 'A politically correct way of stimulating conversation in a channel.',
+        markov: 'The name is mark, asshole.',
+        topic: 'Sets:he topic for the channel, assuming some faggot named veonik didn\'t deop me.',
+        c: 'A chained s// search/replace implementation. Does not use regex so it\'s not a real s// function, shut the fuck up already. The first slashie arg determines the log entry, subsequent argies must be within the log entry. Hardmode enabled.',
+        t: 'A chained s// search/replace implementation that outputs to the /topic. Does not use regex so it\'s not a real s// function, shut the fuck up already. Egregious hardmode enabled (akick, 2min.',
+        s: 'An s// search/replace implementation. Does not use regex so it\'s not a real s// function, shut the fuck up already. Hardmode enabled. You can chain it with s// & s//, but thats the same as c// you retard.',
+        r: 'An s// search/replace implementation. Uses regex but it searches the log (5k line length asendinglyishly or whatever the fuck.',
+        aliaslist: 'There are no aliases and your parents hate you.',
+        maybe_kick: 'Allows a user to kick another user with 1 in 10 odds. Will also kick the person requesting the kick with 1 in 20 odds. If you were the last person to request a maybe_kick, you will be akicked for 2mins and that only expires upon bot restart or !reload',
+        ascii: 'Stop being a weeb.',
+        slap: 'Allows you to slap another user. Super cool, involves dead fish. This is timeshifter\'s 2nd greatest accomplishment, after his javascript gaytracer and before his .net haytracer.',
+        unban: 'Clears all bans in the channel. Does not apply to akicks because thats not how IRC works, but hey keep tryin tora. Maybe it will suddenly work.',
+        invite: 'Sends an /invite to a given list of user(s. Does not apply to people in the channel already, or timeshifter.',
+        rekt: 'The best possible way to let someone know you think they got burned or otherwise were insulted or something. Go ahead, let them know.',
+        tell: 'I can try to let someone know something once they return or I am restarted/reloaded, whichever comes first. It\'s like a PM but worse and you might get aids. Usage: !tell MikeWazowski your bot is broken, AGAIN.',
+        seen: 'The last time I saw a given set of nicks. Usage: !seen yourmom atthe bar',
+        help: 'A function which allows you to set these help messages. Crowdsourcing, made fun!',
+        exec: 'Executes arbitrary code from you with root privs via a kubernetes thinger. Usage: !exec 1+1;drop table weeb_bot.',
+        ladies: 'bitches be trifflin',
+        oppls: '1 in 10 chance of being given op. 9 in 10 chance of being akicked for two mins. 100% chance that you read gay harry potter fanfic.',
+        pride: 'Stick your tongue out and taste my rainbow.'
+    };
+    console.log(man_topics);
+    var func = message.split(' ')[1];
+    console.log(func);
+    if( func !== undefined ){
+      if( man_topics[func] !== undefined ){
+        this.stream.say(chan, man_topics[func]);
+      }else{
+        this.stream.say(chan, 'dunno');
+      }
+    }else{
+      var keys = Object.keys(man_topics).join(', ');
+      console.log(keys);
+      this.stream.say(chan, 'I can offer you info on the following: ' + keys);
+    }
+  },
+  insult: function(chan, message, from){
+    return;
+    var insult = this.insults.get(this, chan, message, from);
+  },
+  echo: function(chan, message, from){
+    return;
+    this.insults.get();
+    this.stream.say(chan, message + ' (' + from + ' is such a ' + this.insults.current_insult + ')');
   }
 };
 
