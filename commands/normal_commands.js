@@ -16,7 +16,7 @@ module.exports = {
       this.stream.say(chan, quotes.start('<timeshifter>:').end(15).process() );
   },
   nig: function(chan, message, from){
-      this.stream.say(chan, '.addpoint niggers');
+    this.stream.say(chan, '.addpoint niggers');
   },
   markov: function(chan, message, from){
     this.stream.say(chan, 'omg no i suck');
@@ -151,22 +151,8 @@ module.exports = {
   },
 
   aliaslist: function(chan, message) {
-    console.log(this.commands);
 
   },
-  mk: function(chan, message, from){
-      this.maybe_kick(chan, message, from);
-  },
-  loldongs: function(chan, message, from){
-    this.stream.say(chan, '!fight {0}');
-    this.fight = {
-        status: true,
-        instigator: this.name, // lol
-        current_health: 100,
-        members: [message.split(' ')[1]]
-    }
-  },
-
 
   /*
    * Allows a user to kick another user with 1 in 10 odds.
@@ -230,11 +216,7 @@ module.exports = {
     this.stream.say(chan, from + ": Fuck you.");
   },
   oppls: function(chan, message, from) {
- //   return this.stream.say(chan, "sorry, " + from + ", veonik is why we can't have nice things. :|");
-    /*var tora_check = from.toLowerCase();
-        if( tora_check == "omfgtora" || tora_check == "gofsckurself" || tora_check == "gofsckyourself" || tora_check == "tora_" ){
-            this.stream.send("KICK", chan, from, "1 + 1 = fuck you");
-        }*/
+    
     var bad_day = Math.round(Math.random() * 10);
     if( bad_day == 3 ){
         this.stream.send('MODE', chan, '+o', from);
@@ -244,20 +226,13 @@ module.exports = {
         this.stream.say('CHANSERV',  msg);
     }
   },
-  ascii: function(chan, message, from){
-      if( this.figlet !== undefined ){
-          console.log('figlet exists!');
-      }else{
-          console.log('no figlet');
-      }
-  },
   slap: function(chan, message, from){
-      this.stream.send("KICK", chan, from, "this is a timeshifter alias!");
+    this.stream.send("KICK", chan, from, "this is a timeshifter alias!");
   },
   ladies: function(chan, message, from){
-      this.stream.say(chan, '( ͡° ͜ʖ ͡° )');
-      this.stream.say(chan, '( ͡⊙ ͜ʖ ͡⊙ )');
-      this.stream.say(chan, '( ͡◉ ͜ʖ ͡◉ )');
+    this.stream.say(chan, '( ͡° ͜ʖ ͡° )');
+    this.stream.say(chan, '( ͡⊙ ͜ʖ ͡⊙ )');
+    this.stream.say(chan, '( ͡◉ ͜ʖ ͡◉ )');
   },
   unban: function(chan, message, from){
     this.stream.say("chanserv", "clear " + chan + " bans");
