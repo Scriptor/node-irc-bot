@@ -19,5 +19,9 @@
   "homepage": "https://bitbucket.org/omgramrod/angrywombot#readme",
   "dependencies": {
     "irc": "^0.3.12"
+  },
+  "devDependencies": {
+    "sinon": "^1.17.6",
+    "tape": "^4.6.2"
   }
 }
