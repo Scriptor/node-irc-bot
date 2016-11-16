@@ -21,6 +21,7 @@
     "irc": "^0.3.12"
   },
   "devDependencies": {
+    "irc-colors": "^1.3.0",
     "sinon": "^1.17.6",
     "tape": "^4.6.2"
   }

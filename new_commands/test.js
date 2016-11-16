@@ -2,7 +2,7 @@ var EventBuss = require('../lib/event-buss.js');
 
 module.exports = Object.assign({}, EventBuss, {
   match: /^test /,
-  name: 'Test Command',
+  name: 'test',
   help: 'This thing does fun stuff',
 
   process(data) {

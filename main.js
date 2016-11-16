@@ -10,6 +10,7 @@ var NormalCommands = require('./commands/normal_commands.js');
 var AliasModule    = require('./commands/alias.js');
 var sqlite3        = require('sqlite3').verbose();
 var Colors      = require('irc-colors');
+var BotEngine      = require('./lib/bot-engine');
 var fs = require('fs');
 
 var options = {
@@ -21,18 +22,26 @@ var options = {
 console.log(' -- Connecting to IRC --');
 var client = new irc.Client(config.server, config.botName, options);
 
+
+var stream = require('./lib/streams/irc.js');
+
+var engine = new BotEngine({
+  stream: stream,
+  stream_client: client
+});
+
 console.log(' -- Creating Bot Instance --');
 var bot = new Bot(config.botName, config.botPass, config.alias_token, client, db, Colors);
 
 // Populate our bot with da knowledge
-bot.load_command_block('super', SuperCommands);
-bot.load_command_block('normal', NormalCommands);
+//bot.load_command_block('super', SuperCommands);
+//bot.load_command_block('normal', NormalCommands);
 // bot.load_command_block('normal', AliasCommands);
-bot.load_command_block('normal', AliasModule);
+//bot.load_command_block('normal', AliasModule);
 
 console.log(' -- Adding Listeners --');
 client.addListener('registered', bot.authenticate.bind(bot));
-client.addListener('message', bot.consumeCommand.bind(bot));
+//client.addListener('message', bot.consumeCommand.bind(bot));
 client.addListener('error', function(message) {
     console.log('DISGUSTING CHANSERV ERROR: ', message);
     try{
